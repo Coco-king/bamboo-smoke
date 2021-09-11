@@ -3,28 +3,28 @@ package io.renren.modules.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.modules.blog.service.CategoryService;
+import io.renren.modules.blog.service.ArticleService;
 import org.springframework.stereotype.Service;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
-import io.renren.modules.blog.mapper.CategoryMapper;
-import io.renren.modules.blog.entity.CategoryEntity;
+import io.renren.modules.blog.mapper.ArticleMapper;
+import io.renren.modules.blog.entity.ArticleEntity;
 
 import java.util.Map;
 
 /**
- * 文章分类表
+ * 文章表
  *
  * @author codecrab
  * @since 2021-09-11 18:59:37
  */
-@Service("categoryService")
-public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEntity> implements CategoryService {
+@Service("articleService")
+public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity> implements ArticleService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CategoryEntity> page = this.page(
-                new Query<CategoryEntity>().getPage(params),
+        IPage<ArticleEntity> page = this.page(
+                new Query<ArticleEntity>().getPage(params),
                 new QueryWrapper<>()
         );
 

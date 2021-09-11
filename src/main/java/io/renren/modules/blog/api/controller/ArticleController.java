@@ -3,32 +3,32 @@ package io.renren.modules.blog.api.controller;
 import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.CommentEntity;
-import io.renren.modules.blog.service.CommentService;
+import io.renren.modules.blog.entity.ArticleEntity;
+import io.renren.modules.blog.service.ArticleService;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 用户评论表
+ * 文章表
  *
  * @author codecrab
  * @since 2021-09-11 18:59:37
  */
 @RestController
-@RequestMapping("api/comment")
-public class CommentController {
+@RequestMapping("api/article")
+public class ArticleController {
 
     @Resource
-    private CommentService commentService;
+    private ArticleService articleService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = commentService.queryPage(params);
+        PageUtils page = articleService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class CommentController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        CommentEntity comment = commentService.getById(id);
+        ArticleEntity article = articleService.getById(id);
 
-        return R.ok().push("comment", comment);
+        return R.ok().push("article", article);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody CommentEntity comment) {
-        commentService.save(comment);
+    public R save(@RequestBody ArticleEntity article) {
+        articleService.save(article);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class CommentController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody CommentEntity comment) {
-        commentService.updateById(comment);
+    public R update(@RequestBody ArticleEntity article) {
+        articleService.updateById(article);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class CommentController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        commentService.removeByIds(Arrays.asList(ids));
+        articleService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

@@ -10,7 +10,7 @@
         <result property="content" column="content"/>
         <result property="summary" column="summary"/>
         <result property="icon" column="icon"/>
-        <result property="postCount" column="post_count"/>
+        <result property="articleCount" column="article_count"/>
         <result property="order" column="order"/>
         <result property="parentId" column="parent_id"/>
         <result property="metaKeywords" column="meta_keywords"/>

@@ -11,10 +11,10 @@ import java.io.Serializable;
  * 文章分类表
  *
  * @author codecrab
- * @since 2021-09-03 15:32:36
+ * @since 2021-09-11 18:59:37
  */
 @Data
-@TableName("m_category")
+@TableName("bs_category")
 public class CategoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,7 +36,7 @@ public class CategoryEntity implements Serializable {
     private String icon;
 
     /** 该分类的内容数量 */
-    private Integer postCount;
+    private Integer articleCount;
 
     /** 排序编码 */
     private Integer order;

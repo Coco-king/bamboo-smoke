@@ -1,16 +1,16 @@
 package io.renren.modules.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.renren.modules.blog.entity.CommentEntity;
+import io.renren.modules.blog.entity.MemberEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 用户评论表
+ * 用户表
  *
  * @author codecrab
  * @since 2021-09-11 18:59:37
  */
 @Mapper
-public interface CommentMapper extends BaseMapper<CommentEntity> {
+public interface MemberMapper extends BaseMapper<MemberEntity> {
 
 }

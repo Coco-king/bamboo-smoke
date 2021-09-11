@@ -11,10 +11,10 @@ import java.io.Serializable;
  * 用户评论表
  *
  * @author codecrab
- * @since 2021-09-03 15:32:37
+ * @since 2021-09-11 18:59:37
  */
 @Data
-@TableName("m_comment")
+@TableName("bs_comment")
 public class CommentEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,13 +30,13 @@ public class CommentEntity implements Serializable {
     private Long parentId;
 
     /** 评论的内容ID */
-    private Long postId;
+    private Long articleId;
 
     /** 评论的用户ID */
-    private Long userId;
+    private Long memberId;
 
     /** 用户认证标识 */
-    private String userAuthName;
+    private String memberAuthName;
 
     /** “顶”的数量 */
     private Integer voteUp;

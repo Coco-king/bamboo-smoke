@@ -10,7 +10,7 @@ import java.util.Map;
  * 用户评论表
  *
  * @author codecrab
- * @since 2021-09-03 15:32:37
+ * @since 2021-09-11 18:59:37
  */
 public interface CommentService extends IService<CommentEntity> {
 
