@@ -10,7 +10,7 @@ import java.util.Map;
  * 用户收藏表
  *
  * @author codecrab
- * @since 2021-09-11 18:59:37
+ * @since 2021-09-11 19:29:43
  */
 public interface MemberCollectionService extends IService<MemberCollectionEntity> {
 

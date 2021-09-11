@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 用户表
  *
  * @author codecrab
- * @since 2021-09-11 18:59:37
+ * @since 2021-09-11 19:29:43
  */
 @Data
 @TableName("bs_member")
@@ -23,7 +23,7 @@ public class MemberEntity implements Serializable {
     @TableId
     private Long id;
 
-    /** 昵称 */
+    /** 用户名 */
     private String memberName;
 
     /** 密码 */
@@ -81,7 +81,7 @@ public class MemberEntity implements Serializable {
     private LocalDateTime lastLoginTime;
 
     /** 逻辑删除（0：未删除，1：已注销账户） */
-    private Integer isDeleted;
+    private Boolean deleted;
 
     /** 创建日期 */
     private LocalDateTime createTime;

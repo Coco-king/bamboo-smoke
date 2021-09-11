@@ -17,10 +17,10 @@
         <result property="voteDown" column="vote_down"/>
         <result property="viewCount" column="view_count"/>
         <result property="commentCount" column="comment_count"/>
-        <result property="recommend" column="recommend"/>
+        <result property="recommend" column="is_recommend"/>
         <result property="level" column="level"/>
         <result property="status" column="status"/>
-        <result property="isDeleted" column="is_deleted"/>
+        <result property="deleted" column="is_deleted"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>

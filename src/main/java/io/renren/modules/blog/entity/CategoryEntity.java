@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 文章分类表
  *
  * @author codecrab
- * @since 2021-09-11 18:59:37
+ * @since 2021-09-11 19:29:43
  */
 @Data
 @TableName("bs_category")
@@ -54,7 +54,7 @@ public class CategoryEntity implements Serializable {
     private Integer status;
 
     /** 逻辑删除（0：未删除，1：已删除） */
-    private Integer isDeleted;
+    private Boolean deleted;
 
     /** 创建日期 */
     private LocalDateTime createTime;

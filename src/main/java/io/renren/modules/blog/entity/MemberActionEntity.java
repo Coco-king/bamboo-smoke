@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 用户动作表
  *
  * @author codecrab
- * @since 2021-09-11 18:59:37
+ * @since 2021-09-11 19:29:43
  */
 @Data
 @TableName("bs_member_action")
