@@ -24,7 +24,7 @@ import java.util.Map;
  * @since 2021年09月10日 上午 10:38
  */
 @Slf4j
-@Service("ossService")
+@Service("uploadService")
 public class UploadServiceImpl implements UploadService {
 
     @Resource
