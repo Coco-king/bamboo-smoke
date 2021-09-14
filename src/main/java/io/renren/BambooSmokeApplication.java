@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Mark sunlightcs@gmail.com
  */
 @SpringBootApplication
-public class RenrenApplication {
+public class BambooSmokeApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RenrenApplication.class, args);
+        SpringApplication.run(BambooSmokeApplication.class, args);
     }
 }
