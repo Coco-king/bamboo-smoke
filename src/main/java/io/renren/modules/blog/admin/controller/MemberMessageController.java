@@ -1,34 +1,34 @@
-package io.renren.modules.blog.api.controller;
+package io.renren.modules.blog.admin.controller;
 
 import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.CategoryEntity;
-import io.renren.modules.blog.service.CategoryService;
+import io.renren.modules.blog.entity.MemberMessageEntity;
+import io.renren.modules.blog.service.MemberMessageService;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 文章分类表
+ * 消息表
  *
  * @author codecrab
  * @since 2021-09-11 19:29:43
  */
 @RestController
-@RequestMapping("api/category")
-public class CategoryController {
+@RequestMapping("admin/membermessage")
+public class MemberMessageController {
 
     @Resource
-    private CategoryService categoryService;
+    private MemberMessageService memberMessageService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = categoryService.queryPage(params);
+        PageUtils page = memberMessageService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class CategoryController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        CategoryEntity category = categoryService.getById(id);
+        MemberMessageEntity memberMessage = memberMessageService.getById(id);
 
-        return R.ok().push("category", category);
+        return R.ok().push("memberMessage", memberMessage);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody CategoryEntity category) {
-        categoryService.save(category);
+    public R save(@RequestBody MemberMessageEntity memberMessage) {
+        memberMessageService.save(memberMessage);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class CategoryController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody CategoryEntity category) {
-        categoryService.updateById(category);
+    public R update(@RequestBody MemberMessageEntity memberMessage) {
+        memberMessageService.updateById(memberMessage);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class CategoryController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        categoryService.removeByIds(Arrays.asList(ids));
+        memberMessageService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

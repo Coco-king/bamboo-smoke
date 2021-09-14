@@ -1,4 +1,4 @@
-package io.renren.modules.blog.api.controller;
+package io.renren.modules.blog.admin.controller;
 
 import io.renren.common.utils.R;
 import io.renren.modules.blog.service.UploadService;

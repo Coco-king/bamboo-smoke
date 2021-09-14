@@ -1,34 +1,34 @@
-package io.renren.modules.blog.api.controller;
+package io.renren.modules.blog.admin.controller;
 
-import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.ArticleEntity;
-import io.renren.modules.blog.service.ArticleService;
+import io.renren.modules.blog.entity.MemberEntity;
+import io.renren.modules.blog.service.MemberService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 文章表
+ * 用户表
  *
  * @author codecrab
  * @since 2021-09-11 19:29:43
  */
 @RestController
-@RequestMapping("api/article")
-public class ArticleController {
+@RequestMapping("admin/member")
+public class MemberController {
 
     @Resource
-    private ArticleService articleService;
+    private MemberService memberService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = articleService.queryPage(params);
+        PageUtils page = memberService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class ArticleController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        ArticleEntity article = articleService.getById(id);
+        MemberEntity member = memberService.getById(id);
 
-        return R.ok().push("article", article);
+        return R.ok().push("member", member);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody ArticleEntity article) {
-        articleService.save(article);
+    public R save(@RequestBody MemberEntity member) {
+        memberService.save(member);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class ArticleController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody ArticleEntity article) {
-        articleService.updateById(article);
+    public R update(@RequestBody MemberEntity member) {
+        memberService.updateById(member);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class ArticleController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        articleService.removeByIds(Arrays.asList(ids));
+        memberService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
