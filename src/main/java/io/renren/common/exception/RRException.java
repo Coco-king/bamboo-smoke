@@ -7,6 +7,8 @@
  */
 package io.renren.common.exception;
 
+import cn.hutool.core.util.StrUtil;
+
 /**
  * 自定义异常
  *
@@ -22,6 +24,10 @@ public class RRException extends RuntimeException {
     public RRException(String msg) {
         super(msg);
         this.msg = msg;
+    }
+
+    public RRException(String template, Object... params) {
+        this(StrUtil.format(template, params));
     }
 
     public RRException(String msg, Throwable e) {

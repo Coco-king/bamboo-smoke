@@ -15,4 +15,8 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <delete id="deleteAll">
+        delete from bs_region
+    </delete>
+
 </mapper>

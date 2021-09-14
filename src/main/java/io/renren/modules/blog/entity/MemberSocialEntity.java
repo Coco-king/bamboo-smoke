@@ -1,11 +1,13 @@
 package io.renren.modules.blog.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 用户与第三方账户绑定表
@@ -48,9 +50,11 @@ public class MemberSocialEntity implements Serializable {
     private Integer status;
 
     /** 创建日期 */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    /** 修改日期 */
+    /** 最后修改日期 */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 }

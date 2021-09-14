@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,16 @@ public class RegionController {
     }
 
     /**
+     * 全部列表
+     */
+    @GetMapping("/list/all")
+    public R listAll() {
+        List<RegionEntity> list = regionService.buildTree();
+
+        return R.ok().push("list", list);
+    }
+
+    /**
      * 信息
      */
     @GetMapping("/info/{id}")
@@ -54,11 +65,11 @@ public class RegionController {
     }
 
     /**
-     * 保存
+     * 初始化中国各区域信息，若已有信息原信息会被替换
      */
-    @PostMapping("/import")
-    public R importRegion(@RequestBody RegionEntity region) {
-        regionService.save(region);
+    @PostMapping("/initRegion")
+    public R initRegion() {
+        regionService.initRegion();
 
         return R.ok();
     }

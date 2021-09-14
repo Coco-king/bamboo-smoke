@@ -1,9 +1,6 @@
 package io.renren.modules.blog.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -57,13 +54,15 @@ public class CategoryEntity implements Serializable {
 
     /** 逻辑删除（0：未删除，1：已删除） */
     @TableLogic
-    @TableField("is_deleted")
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
     private Boolean deleted;
 
     /** 创建日期 */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    /** 修改日期 */
+    /** 最后修改日期 */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 }

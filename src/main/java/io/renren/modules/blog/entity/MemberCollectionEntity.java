@@ -1,11 +1,13 @@
 package io.renren.modules.blog.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 用户收藏表
@@ -35,10 +37,12 @@ public class MemberCollectionEntity implements Serializable {
     /** 消息状态 */
     private Integer status;
 
-    /** 创建时间 */
+    /** 创建日期 */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    /** 修改时间 */
+    /** 最后修改日期 */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 }

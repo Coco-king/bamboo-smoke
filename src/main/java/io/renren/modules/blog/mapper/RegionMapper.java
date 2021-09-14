@@ -13,4 +13,5 @@ import io.renren.modules.blog.entity.RegionEntity;
 @Mapper
 public interface RegionMapper extends BaseMapper<RegionEntity> {
 
+    void deleteAll();
 }

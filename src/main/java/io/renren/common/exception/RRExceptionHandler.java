@@ -49,24 +49,28 @@ public class RRExceptionHandler {
      */
     @ExceptionHandler(RRException.class)
     public R handleRRException(RRException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生业务异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public R handlerNoFoundException(NoHandlerFoundException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生路径不存在异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(4040, "路径不存在，请检查路径是否正确");
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
     public R handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生数据库重复记录异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(5000, "数据库中已存在该记录");
     }
 
     @ExceptionHandler(AuthorizationException.class)
     public R handleAuthorizationException(AuthorizationException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生权限异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(4010, "没有权限，请联系管理员授权");
     }
@@ -76,6 +80,7 @@ public class RRExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public R invalidArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生参数异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(5000, e.getMessage());
     }
@@ -86,6 +91,7 @@ public class RRExceptionHandler {
      */
     @ExceptionHandler(DataAccessException.class)
     public R dataAccessException(DataAccessException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生数据库异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(5000, e.getMessage());
     }
@@ -95,6 +101,7 @@ public class RRExceptionHandler {
      */
     @ExceptionHandler(NullPointerException.class)
     public R nullPointerException(NullPointerException e, HttpServletRequest request) {
+        e.printStackTrace();
         logger.error("{} {}, 发生空指针异常, 原因:{}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return R.error(5000, e.getMessage());
     }
@@ -104,6 +111,7 @@ public class RRExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public R handleException(Exception e, HttpServletRequest request) {
+        e.printStackTrace();
         // 其他内部spring mvc异常
         R r = mvcExceptionResolve(e);
         if (r != null) {
