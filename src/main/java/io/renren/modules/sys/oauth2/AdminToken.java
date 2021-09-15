@@ -8,19 +8,25 @@
 package io.renren.modules.sys.oauth2;
 
 
-import org.apache.shiro.authc.AuthenticationToken;
+import io.renren.common.shiro.BaseToken;
+import io.renren.common.shiro.ShiroConstant;
 
 /**
  * token
  *
  * @author Mark sunlightcs@gmail.com
  */
-public class OAuth2Token implements AuthenticationToken {
+public class AdminToken implements BaseToken {
 
     private final String token;
 
-    public OAuth2Token(String token) {
+    public AdminToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String getLoginType() {
+        return ShiroConstant.ADMIN_LOGIN_TYPE;
     }
 
     @Override

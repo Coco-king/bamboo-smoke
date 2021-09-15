@@ -28,7 +28,7 @@ import java.io.IOException;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public class OAuth2Filter extends AuthenticatingFilter {
+public class AdminFilter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
@@ -39,7 +39,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             return null;
         }
 
-        return new OAuth2Token(token);
+        return new AdminToken(token);
     }
 
     @Override

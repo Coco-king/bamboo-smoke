@@ -1,8 +1,14 @@
 package io.renren.modules.blog.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import io.renren.modules.blog.entity.RegionEntity;
+import io.renren.modules.blog.vo.RegionParentVo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 中国各区域信息
@@ -14,4 +20,6 @@ import io.renren.modules.blog.entity.RegionEntity;
 public interface RegionMapper extends BaseMapper<RegionEntity> {
 
     void deleteAll();
+
+    List<RegionParentVo> selectRegionParentList(@Param(Constants.WRAPPER) Wrapper<RegionEntity> wrapper);
 }

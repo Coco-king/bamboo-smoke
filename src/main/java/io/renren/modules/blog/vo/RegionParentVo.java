@@ -1,5 +1,6 @@
 package io.renren.modules.blog.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.renren.modules.blog.entity.RegionEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,8 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class RegionParentVo extends RegionEntity {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RegionParentVo> children = new ArrayList<>();
-
-    private String parentName;
 
 }

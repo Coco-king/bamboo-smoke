@@ -1,11 +1,14 @@
 package io.renren.modules.blog.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.exception.RRException;
+import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.Query;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.mapper.RegionMapper;
 import io.renren.modules.blog.service.RegionService;
@@ -32,9 +35,13 @@ import java.util.stream.Collectors;
 public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> implements RegionService {
 
     @Override
-    @Cacheable(value = "regionList", key = "#root.methodName", sync = true)
-    public List<RegionEntity> findAll() {
-        return this.list();
+    public PageUtils queryPage(Map<String, Object> params) {
+        IPage<RegionEntity> page = this.page(
+            new Query<RegionEntity>().getPage(params),
+            new QueryWrapper<>()
+        );
+
+        return new PageUtils(page);
     }
 
     @Override
@@ -49,11 +56,13 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-    @Cacheable(value = "regionTree", key = "#root.methodName", sync = true)
-    public List<RegionParentVo> findAllWithTree() {
-        List<RegionParentVo> regionEntities = this.list().stream()
-            .map(region -> BeanUtil.copyProperties(region, RegionParentVo.class))
-            .collect(Collectors.toList());
+    @Cacheable(value = "regionTree", key = "#root.methodName + ':' +#root.args[0]", sync = true)
+    public List<RegionParentVo> findAllWithTree(Integer maxLevel) {
+
+        List<RegionParentVo> regionEntities = baseMapper.selectRegionParentList(
+            new QueryWrapper<RegionEntity>()
+                .le("level", maxLevel)
+        );
 
         //获取所有根节点
         List<RegionParentVo> rootList = regionEntities.stream()

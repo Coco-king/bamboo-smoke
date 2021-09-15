@@ -31,4 +31,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         return new PageUtils(page);
     }
 
+    @Override
+    public MemberEntity getUserByLoginName(String loginName) {
+        return null;
+    }
+
 }

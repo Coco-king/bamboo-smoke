@@ -1,5 +1,6 @@
 package io.renren.modules.blog.admin.controller;
 
+import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.service.RegionService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 中国各区域信息
@@ -31,10 +33,10 @@ public class RegionController {
      * 列表
      */
     @GetMapping("/list")
-    public R list() {
-        List<RegionEntity> list = regionService.findAll();
+    public R list(@RequestParam Map<String, Object> params) {
+        PageUtils page = regionService.queryPage(params);
 
-        return R.ok().push("list", list);
+        return R.ok().push("page", page);
     }
 
     /**
@@ -42,8 +44,10 @@ public class RegionController {
      */
     @ApiOperation("地域信息树型数据")
     @GetMapping("/list/tree")
-    public R listTree() {
-        List<RegionParentVo> list = regionService.findAllWithTree();
+    public R listTree(
+        @RequestParam(required = false, defaultValue = "100") Integer maxLevel
+    ) {
+        List<RegionParentVo> list = regionService.findAllWithTree(maxLevel);
 
         return R.ok().push("list", list);
     }
@@ -62,7 +66,7 @@ public class RegionController {
      * 保存
      */
     @PostMapping("/save")
-    @CacheEvict(value = "regionList", allEntries = true)
+    @CacheEvict(value = "regionTree", allEntries = true)
     public R save(@RequestBody RegionEntity region) {
         regionService.save(region);
 
@@ -73,7 +77,7 @@ public class RegionController {
      * 初始化中国各区域信息，若已有信息原信息会被替换
      */
     @PostMapping("/initRegion")
-    @CacheEvict(value = "regionList", allEntries = true)
+    @CacheEvict(value = "regionTree", allEntries = true)
     public R initRegion() {
         regionService.initRegion();
 
@@ -84,7 +88,7 @@ public class RegionController {
      * 修改
      */
     @PutMapping("/update")
-    @CacheEvict(value = "regionList", allEntries = true)
+    @CacheEvict(value = "regionTree", allEntries = true)
     public R update(@RequestBody RegionEntity region) {
         regionService.updateById(region);
 
@@ -95,7 +99,7 @@ public class RegionController {
      * 删除
      */
     @DeleteMapping("/delete")
-    @CacheEvict(value = "regionList", allEntries = true)
+    @CacheEvict(value = "regionTree", allEntries = true)
     public R delete(@RequestBody Long[] ids) {
         regionService.removeByIds(Arrays.asList(ids));
 

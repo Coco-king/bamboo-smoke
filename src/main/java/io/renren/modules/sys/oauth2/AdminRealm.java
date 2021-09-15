@@ -26,14 +26,14 @@ import java.util.Set;
  * @author Mark sunlightcs@gmail.com
  */
 @Component
-public class OAuth2Realm extends AuthorizingRealm {
+public class AdminRealm extends AuthorizingRealm {
 
     @Resource
     private ShiroService shiroService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof OAuth2Token;
+        return token instanceof AdminToken;
     }
 
     /**
