@@ -1,11 +1,10 @@
 package io.renren.modules.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.PageUtils;
 import io.renren.modules.blog.entity.RegionEntity;
+import io.renren.modules.blog.vo.RegionParentVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 中国各区域信息
@@ -15,10 +14,10 @@ import java.util.Map;
  */
 public interface RegionService extends IService<RegionEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    List<RegionEntity> findAll();
 
     void initRegion();
 
-    List<RegionEntity> findAllWithTree();
+    List<RegionParentVo> findAllWithTree();
 }
 

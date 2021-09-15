@@ -5,8 +5,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,9 +47,6 @@ public class RegionEntity implements Serializable {
     /** 最后修改日期 */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-
-    @TableField(exist = false)
-    private List<RegionEntity> children = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

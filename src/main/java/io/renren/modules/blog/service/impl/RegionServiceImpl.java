@@ -1,18 +1,18 @@
 package io.renren.modules.blog.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.exception.RRException;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.mapper.RegionMapper;
 import io.renren.modules.blog.service.RegionService;
 import io.renren.modules.blog.utils.StreamUtil;
+import io.renren.modules.blog.vo.RegionParentVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,13 +32,9 @@ import java.util.stream.Collectors;
 public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> implements RegionService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<RegionEntity> page = this.page(
-            new Query<RegionEntity>().getPage(params),
-            new QueryWrapper<>()
-        );
-
-        return new PageUtils(page);
+    @Cacheable(value = "regionList", key = "#root.methodName", sync = true)
+    public List<RegionEntity> findAll() {
+        return this.list();
     }
 
     @Override
@@ -46,17 +42,21 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     public void initRegion() {
         InputStream inputStream = FileUtil.getInputStream("static/data-array.json");
         String json = StreamUtil.toString(inputStream);
+        IoUtil.close(inputStream);
         List<RegionEntity> regions = this.initRegionLevel(JSONUtil.toList(json, RegionEntity.class));
         baseMapper.deleteAll();
         this.saveBatch(regions);
     }
 
     @Override
-    public List<RegionEntity> findAllWithTree() {
-        List<RegionEntity> regionEntities = this.list();
+    @Cacheable(value = "regionTree", key = "#root.methodName", sync = true)
+    public List<RegionParentVo> findAllWithTree() {
+        List<RegionParentVo> regionEntities = this.list().stream()
+            .map(region -> BeanUtil.copyProperties(region, RegionParentVo.class))
+            .collect(Collectors.toList());
 
         //获取所有根节点
-        List<RegionEntity> rootList = regionEntities.stream()
+        List<RegionParentVo> rootList = regionEntities.stream()
             .filter(regionEntity -> regionEntity.getLevel() == 1)
             .collect(Collectors.toList());
 
@@ -65,8 +65,8 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
             .collect(Collectors.toList());
     }
 
-    private void buildTree(RegionEntity parent, List<RegionEntity> list) {
-        for (RegionEntity region : list) {
+    private void buildTree(RegionParentVo parent, List<RegionParentVo> list) {
+        for (RegionParentVo region : list) {
             if (parent.getId().equals(region.getParentId())) {
                 parent.getChildren().add(region);
                 buildTree(region, list);
