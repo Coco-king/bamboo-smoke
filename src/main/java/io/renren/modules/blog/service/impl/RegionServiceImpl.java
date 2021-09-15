@@ -52,17 +52,17 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-    public List<RegionEntity> buildTree() {
+    public List<RegionEntity> findAllWithTree() {
         List<RegionEntity> regionEntities = this.list();
 
         //获取所有根节点
         List<RegionEntity> rootList = regionEntities.stream()
-            .filter(regionEntity -> regionEntity.getParentId() == 0)
+            .filter(regionEntity -> regionEntity.getLevel() == 1)
             .collect(Collectors.toList());
 
-        return rootList.stream().peek(region -> {
-            this.buildTree(region, regionEntities);
-        }).collect(Collectors.toList());
+        return rootList.stream()
+            .peek(region -> this.buildTree(region, regionEntities))
+            .collect(Collectors.toList());
     }
 
     private void buildTree(RegionEntity parent, List<RegionEntity> list) {

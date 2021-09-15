@@ -39,7 +39,7 @@ public class RegionController {
      */
     @GetMapping("/list/all")
     public R listAll() {
-        List<RegionEntity> list = regionService.buildTree();
+        List<RegionEntity> list = regionService.findAllWithTree();
 
         return R.ok().push("list", list);
     }

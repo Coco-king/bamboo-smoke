@@ -19,6 +19,6 @@ public interface RegionService extends IService<RegionEntity> {
 
     void initRegion();
 
-    List<RegionEntity> buildTree();
+    List<RegionEntity> findAllWithTree();
 }
 
