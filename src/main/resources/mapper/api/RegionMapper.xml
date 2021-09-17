@@ -17,12 +17,12 @@
 
     <delete id="deleteAll">
         delete
-        from bs_region
+        from `bs_region`
     </delete>
 
     <select id="selectRegionParentList" resultType="io.renren.modules.blog.vo.RegionParentVo">
         select *
-        from bs_region ${ew.customSqlSegment}
+        from `bs_region` ${ew.customSqlSegment}
     </select>
 
 </mapper>

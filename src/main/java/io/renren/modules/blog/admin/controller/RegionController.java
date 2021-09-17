@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -40,14 +39,16 @@ public class RegionController {
     }
 
     /**
-     * 全部列表
+     * 获取指定parentId和他的所有下级区域信息
      */
     @ApiOperation("地域信息树型数据")
     @GetMapping("/list/tree")
     public R listTree(
-        @RequestParam(required = false, defaultValue = "100") Integer maxLevel
+        @RequestParam(required = false, defaultValue = "100") Integer maxLevel,
+        @RequestParam(required = false, defaultValue = "false") Boolean isLazy,
+        @RequestParam(required = false, defaultValue = "1") Long parentId
     ) {
-        List<RegionParentVo> list = regionService.findAllWithTree(maxLevel);
+        List<RegionParentVo> list = regionService.findAllWithTree(maxLevel, parentId, isLazy);
 
         return R.ok().push("list", list);
     }
@@ -58,8 +59,10 @@ public class RegionController {
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
         RegionEntity region = regionService.getById(id);
+        //递归查询出指定id的所有上级Id
+        List<String> cascadeData = regionService.getParentPath(region.getParentId());
 
-        return R.ok().push("region", region);
+        return R.ok().push("region", region).push("cascadeData", cascadeData);
     }
 
     /**
@@ -90,18 +93,16 @@ public class RegionController {
     @PutMapping("/update")
     @CacheEvict(value = "regionTree", allEntries = true)
     public R update(@RequestBody RegionEntity region) {
-        regionService.updateById(region);
-
-        return R.ok();
+        return regionService.checkAndUpdate(region);
     }
 
     /**
      * 删除
      */
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @CacheEvict(value = "regionTree", allEntries = true)
-    public R delete(@RequestBody Long[] ids) {
-        regionService.removeByIds(Arrays.asList(ids));
+    public R delete(@PathVariable Long id) {
+        regionService.removeWithChildrenById(id);
 
         return R.ok();
     }

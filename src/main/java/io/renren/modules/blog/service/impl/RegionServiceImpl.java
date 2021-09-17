@@ -1,25 +1,31 @@
 package io.renren.modules.blog.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import io.renren.common.exception.RRException;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
+import io.renren.common.utils.R;
+import io.renren.common.validator.Assert;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.mapper.RegionMapper;
 import io.renren.modules.blog.service.RegionService;
 import io.renren.modules.blog.utils.StreamUtil;
 import io.renren.modules.blog.vo.RegionParentVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,7 +53,7 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void initRegion() {
-        InputStream inputStream = FileUtil.getInputStream("static/data-array.json");
+        InputStream inputStream = FileUtil.getInputStream("static/region-data-array.json");
         String json = StreamUtil.toString(inputStream);
         IoUtil.close(inputStream);
         List<RegionEntity> regions = this.initRegionLevel(JSONUtil.toList(json, RegionEntity.class));
@@ -56,21 +62,140 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-    @Cacheable(value = "regionTree", key = "#root.methodName + ':' +#root.args[0]", sync = true)
-    public List<RegionParentVo> findAllWithTree(Integer maxLevel) {
+//    @Cacheable(value = "regionTree", key = "#root.methodName + ':' + #root.args[0] + ' - ' + #root.args[1] + ' - ' + #root.args[2] + ' - ' + #root.args[3]", sync = true)
+    public List<RegionParentVo> findAllWithTree(Integer maxLevel, Long rootId, Boolean isLazy) {
+        //表示延迟加载
+        if (isLazy) {
+            return this.lazyLoad(rootId);
+        }
+        return this.eagerLoad(maxLevel, rootId);
+    }
 
-        List<RegionParentVo> regionEntities = baseMapper.selectRegionParentList(
+    @Override
+    public List<String> getParentPath(Long id) {
+        List<String> list = this.getParentPath(id, Lists.newArrayList());
+        Collections.reverse(list);
+        return list;
+    }
+
+    @Override
+    public R checkAndUpdate(RegionEntity region) {
+        Long parentId = region.getParentId();
+        Long id = region.getId();
+        Assert.isNotEqual(parentId, id, "区域的上级区域不能是自己");
+
+        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, true);
+        Assert.isNotEmpty(tree, "未找到待修改节点的信息");
+        Assert.isTrue(tree.size() == 1, "查询到待修改节点有多个");
+
+        //获取当前节点的深度
+        int depth = getDepth(tree.get(0));
+
+        //获取待移动的父级节点信息
+        RegionEntity parent = baseMapper.selectById(parentId);
+        Assert.isNotNull(parent, "未找到待修改节点的父节点信息");
+        //获取父级的Level，由于层级是从0开始的，所以加一
+        int level = ObjectUtil.defaultIfNull(parent.getLevel(), 0) + 1;
+
+        //如果当前节点的深度 + 父节点的level > 4，就不能移动
+        Assert.isTrue(depth + level <= 4, "区域列表最大层级为4级，精确到（区/县），请检查上级区域是否正确");
+
+        RegionEntity update = new RegionEntity();
+        update.setId(region.getId());
+        update.setParentId(parentId);
+        update.setName(region.getName());
+        // 设置移动后的层级，为他的父层级 + 1
+        update.setLevel(level);
+        try {
+            baseMapper.updateById(update);
+        } catch (Exception e) {
+            log.error("更新失败，数据库中唯一索引限制，同一个父级区域下不能有名字相同的区域", e);
+            throw new RRException("同一个父级区域下不能有名字相同的区域");
+        }
+        return R.ok().push("newParentId", parentId.toString()).push("oldParentId", tree.get(0).getParentId().toString());
+    }
+
+    @Override
+    public void removeWithChildrenById(Long id) {
+        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, true);
+
+        List<Long> ids = Lists.newArrayList(id);
+        this.getChildrenId(tree.get(0), ids);
+        baseMapper.deleteBatchIds(ids);
+    }
+
+    private void getChildrenId(RegionParentVo tree, List<Long> childrenIds) {
+        List<RegionParentVo> children = tree.getChildren();
+        if (CollectionUtil.isNotEmpty(children)) {
+            for (RegionParentVo child : children) {
+                childrenIds.add(child.getId());
+                getChildrenId(child, childrenIds);
+            }
+        }
+    }
+
+    private int getDepth(RegionParentVo tree) {
+        List<Integer> depthPool = Lists.newArrayList();
+        this.calcDepth(tree, 1, depthPool);
+        return depthPool.isEmpty() ? 1 : Collections.max(depthPool);
+    }
+
+    private void calcDepth(RegionParentVo tree, int depth, List<Integer> depthPool) {
+        List<RegionParentVo> children = tree.getChildren();
+        if (CollectionUtil.isNotEmpty(children)) {
+            depthPool.add(++depth);
+            for (RegionParentVo child : children) {
+                calcDepth(child, depth, depthPool);
+            }
+        }
+    }
+
+    /**
+     * 递归找到他的所有上级路径，子路径在前 例如：["11001","11000","1"]
+     */
+    private List<String> getParentPath(Long id, List<String> list) {
+        list.add(id.toString());
+        RegionEntity region = baseMapper.selectById(id);
+        if (region.getParentId() != 0) {
+            getParentPath(region.getParentId(), list);
+        }
+        return list;
+    }
+
+    private List<RegionParentVo> lazyLoad(Long rootId) {
+        // 这里是自己写的xml，需指定查询未删除的条件
+        List<RegionParentVo> list = baseMapper.selectRegionParentList(
             new QueryWrapper<RegionEntity>()
-                .le("level", maxLevel)
+                .eq("parent_id", rootId)
+                .eq("is_deleted", false)
+        );
+
+        return list.stream()
+            .peek(region -> {
+                boolean hasChildren = false;
+                //如果他的层级小于3，就没必要再去找他的子区域了
+                if (region.getLevel() < 3) {
+                    long count = this.count(new QueryWrapper<RegionEntity>().eq("parent_id", region.getId()));
+                    hasChildren = count > 0;
+                }
+                region.setHasChildren(hasChildren);
+            })
+            .sorted(Comparator.comparing(RegionEntity::getId))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 查询指定节点下的所有节点
+     */
+    private List<RegionParentVo> eagerLoad(Integer maxLevel, Long rootId) {
+        List<RegionParentVo> list = baseMapper.selectRegionParentList(
+            new QueryWrapper<RegionEntity>().le("level", maxLevel)
         );
 
         //获取所有根节点
-        List<RegionParentVo> rootList = regionEntities.stream()
-            .filter(regionEntity -> regionEntity.getLevel() == 1)
-            .collect(Collectors.toList());
-
-        return rootList.stream()
-            .peek(region -> this.buildTree(region, regionEntities))
+        return list.stream()
+            .filter(region -> region.getId().equals(rootId))
+            .peek(region -> this.buildTree(region, list))
             .collect(Collectors.toList());
     }
 
@@ -78,6 +203,7 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
         for (RegionParentVo region : list) {
             if (parent.getId().equals(region.getParentId())) {
                 parent.getChildren().add(region);
+                parent.setHasChildren(true);
                 buildTree(region, list);
             }
         }
@@ -91,7 +217,7 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
             region.setId(Long.parseLong(region.getValue()));
             Long parentId = region.getParentId();
             if (parentId == null) {
-                region.setLevel(1);
+                region.setLevel(0);
                 region.setParentId(0L);
             } else {
                 RegionEntity regionEntity = map.get(parentId.toString());

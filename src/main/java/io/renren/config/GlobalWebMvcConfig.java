@@ -7,15 +7,7 @@
  */
 package io.renren.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import io.renren.common.serializer.CustomizeJsonSerializer;
-import io.renren.common.serializer.MyBeanSerializerModifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -38,21 +30,5 @@ public class GlobalWebMvcConfig implements WebMvcConfigurer {
             .allowCredentials(true)
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .maxAge(3600);
-    }
-
-    /**
-     * 配置Jackson的序列化方式
-     */
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        // 为objectMapper注册一个带有SerializerModifier的Factory
-        objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new MyBeanSerializerModifier()));
-
-        SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        serializerProvider.setNullValueSerializer(new CustomizeJsonSerializer.NullObjectJsonSerializer());
-        return objectMapper;
     }
 }

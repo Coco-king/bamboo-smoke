@@ -2,6 +2,7 @@ package io.renren.modules.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.R;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.vo.RegionParentVo;
 
@@ -20,6 +21,12 @@ public interface RegionService extends IService<RegionEntity> {
 
     void initRegion();
 
-    List<RegionParentVo> findAllWithTree(Integer maxLevel);
+    List<RegionParentVo> findAllWithTree(Integer maxLevel, Long rootId, Boolean isLazy);
+
+    List<String> getParentPath(Long id);
+
+    R checkAndUpdate(RegionEntity region);
+
+    void removeWithChildrenById(Long id);
 }
 

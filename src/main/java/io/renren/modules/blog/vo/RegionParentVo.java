@@ -19,4 +19,5 @@ public class RegionParentVo extends RegionEntity {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RegionParentVo> children = new ArrayList<>();
 
+    private Boolean hasChildren;
 }
