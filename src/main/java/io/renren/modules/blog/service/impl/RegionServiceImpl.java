@@ -73,10 +73,11 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-    public List<String> getParentPath(Long id) {
-        List<String> list = this.getParentPath(id, Lists.newArrayList());
-        Collections.reverse(list);
-        return list;
+    public List<String> getParentPath(Long id, Boolean excludeSelf) {
+        List<String> result = excludeSelf ? Lists.newArrayList() : Lists.newArrayList(id.toString());
+        this.getParentPath(id, result);
+        Collections.reverse(result);
+        return result;
     }
 
     @Override
@@ -183,13 +184,13 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     /**
      * 递归找到他的所有上级路径，子路径在前 例如：["11001","11000","1"]
      */
-    private List<String> getParentPath(Long id, List<String> list) {
-        list.add(id.toString());
+    private void getParentPath(Long id, List<String> list) {
         RegionEntity region = baseMapper.selectById(id);
-        if (region.getParentId() != 0) {
-            getParentPath(region.getParentId(), list);
+        Long parentId = region.getParentId();
+        if (parentId != 0) {
+            list.add(parentId.toString());
+            getParentPath(parentId, list);
         }
-        return list;
     }
 
     private List<RegionParentVo> lazyLoad(Long rootId) {

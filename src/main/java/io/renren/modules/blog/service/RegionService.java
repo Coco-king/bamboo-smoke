@@ -23,7 +23,7 @@ public interface RegionService extends IService<RegionEntity> {
 
     List<RegionParentVo> findAllWithTree(Integer maxLevel, Long rootId, Boolean isLazy);
 
-    List<String> getParentPath(Long id);
+    List<String> getParentPath(Long id, Boolean excludeSelf);
 
     R checkAndUpdate(RegionEntity region);
 

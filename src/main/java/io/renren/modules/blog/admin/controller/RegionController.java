@@ -60,10 +60,21 @@ public class RegionController {
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
         RegionEntity region = regionService.getById(id);
-        //递归查询出指定id的所有上级Id
-        List<String> cascadeData = regionService.getParentPath(region.getParentId());
 
-        return R.ok().push("region", region).push("cascadeData", cascadeData);
+        return R.ok().push("region", region);
+    }
+
+    /**
+     * 信息
+     */
+    @GetMapping("/path")
+    public R path(
+        @RequestParam Long id,
+        @RequestParam(defaultValue = "true") Boolean excludeSelf
+    ) {
+        List<String> cascadeData = regionService.getParentPath(id, excludeSelf);
+
+        return R.ok().push("cascadeData", cascadeData);
     }
 
     /**
