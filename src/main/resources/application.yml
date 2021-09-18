@@ -43,7 +43,7 @@ spring:
     type: redis
     redis:
       key-prefix: bamboo_smoke:CACHE_
-      time-to-live: 3600000
+      time-to-live: 86400000 # 24小时
 #  resources:
 #    add-mappings: false
 #mybatis

@@ -21,6 +21,7 @@ import io.renren.modules.blog.service.RegionService;
 import io.renren.modules.blog.utils.StreamUtil;
 import io.renren.modules.blog.vo.RegionParentVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,7 +64,7 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-//    @Cacheable(value = "regionTree", key = "#root.methodName + ':' + #root.args[0] + ' - ' + #root.args[1] + ' - ' + #root.args[2] + ' - ' + #root.args[3]", sync = true)
+    @Cacheable(value = "regionTree", key = "#root.methodName + ':' + #root.args[0] + ' - ' + #root.args[1] + ' - ' + #root.args[2]", sync = true)
     public List<RegionParentVo> findAllWithTree(Integer maxLevel, Long rootId, Boolean isLazy) {
         //表示延迟加载
         if (isLazy) {
