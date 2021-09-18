@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,18 +25,22 @@ public class CommentEntity implements Serializable {
 
     /** 主键ID */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 评论的内容 */
     private String content;
 
     /** 回复的评论ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /** 评论的内容ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long articleId;
 
     /** 评论的用户ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     /** 用户认证标识 */

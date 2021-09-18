@@ -1,6 +1,8 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ public class CategoryEntity implements Serializable {
 
     /** 主键ID */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 标题 */
@@ -41,6 +44,7 @@ public class CategoryEntity implements Serializable {
     private Integer order;
 
     /** 父级分类的ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /** SEO关键字 */

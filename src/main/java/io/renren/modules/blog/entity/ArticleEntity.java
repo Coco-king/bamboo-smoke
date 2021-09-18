@@ -1,6 +1,8 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ public class ArticleEntity implements Serializable {
 
     /** 主键ID */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 标题 */
@@ -35,9 +38,11 @@ public class ArticleEntity implements Serializable {
     private String editMode;
 
     /** 文章所属分类ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long categoryId;
 
     /** 用户ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     /** 用户认证标识 */

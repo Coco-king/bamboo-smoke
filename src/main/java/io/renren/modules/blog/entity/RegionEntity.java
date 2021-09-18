@@ -1,6 +1,8 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,9 +23,11 @@ public class RegionEntity implements Serializable {
 
     /** 地区信息主键 */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 该地区的上级区域 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /** 地区名称 */

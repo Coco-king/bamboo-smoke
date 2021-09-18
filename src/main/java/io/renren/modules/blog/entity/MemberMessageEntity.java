@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,18 +25,23 @@ public class MemberMessageEntity implements Serializable {
 
     /** 主键ID */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 发送消息的用户ID */
-    private Long frobsMemberId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long fromMemberId;
 
     /** 接收消息的用户ID */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long toMemberId;
 
     /** 消息可能关联的帖子 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long articleId;
 
     /** 消息可能关联的评论 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long commentId;
 
     /** 消息内容 */

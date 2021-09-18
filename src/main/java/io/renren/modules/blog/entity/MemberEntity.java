@@ -1,6 +1,8 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ public class MemberEntity implements Serializable {
 
     /** 主键ID */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 用户名 */
