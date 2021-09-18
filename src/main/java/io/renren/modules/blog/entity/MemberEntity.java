@@ -1,10 +1,15 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -23,13 +28,24 @@ public class MemberEntity implements Serializable {
     /** 主键ID */
     @TableId
     @JsonSerialize(using = ToStringSerializer.class)
+    @Null(message = "用户ID必须为空", groups = AddGroup.class)
+    @NotNull(message = "用户ID不能为空", groups = UpdateGroup.class)
     private Long id;
 
     /** 用户名 */
+    @NotNull(message = "用户名不能为空", groups = AddGroup.class)
     private String memberName;
 
     /** 密码 */
+    @JsonIgnore
+    @NotNull(message = "密码不能为空", groups = AddGroup.class)
     private String password;
+
+    /** 确认密码 */
+    @JsonIgnore
+    @TableField(exist = false)
+    @NotNull(message = "确认密码不能为空", groups = AddGroup.class)
+    private String rePass;
 
     /** 盐 */
     private String salt;

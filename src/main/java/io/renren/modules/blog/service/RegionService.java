@@ -27,6 +27,8 @@ public interface RegionService extends IService<RegionEntity> {
 
     R checkAndUpdate(RegionEntity region);
 
-    void removeWithChildrenById(Long id);
+    R removeWithChildrenById(Long id);
+
+    R saveRegion(RegionEntity region);
 }
 

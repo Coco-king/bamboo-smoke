@@ -2,6 +2,7 @@ package io.renren.modules.blog.admin.controller;
 
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.service.RegionService;
 import io.renren.modules.blog.vo.RegionParentVo;
@@ -71,9 +72,9 @@ public class RegionController {
     @PostMapping("/save")
     @CacheEvict(value = "regionTree", allEntries = true)
     public R save(@RequestBody RegionEntity region) {
-        regionService.save(region);
+        ValidatorUtils.validateEntity(region);
 
-        return R.ok();
+        return regionService.saveRegion(region);
     }
 
     /**
@@ -93,6 +94,8 @@ public class RegionController {
     @PutMapping("/update")
     @CacheEvict(value = "regionTree", allEntries = true)
     public R update(@RequestBody RegionEntity region) {
+        ValidatorUtils.validateEntity(region);
+
         return regionService.checkAndUpdate(region);
     }
 
@@ -102,9 +105,7 @@ public class RegionController {
     @DeleteMapping("/delete/{id}")
     @CacheEvict(value = "regionTree", allEntries = true)
     public R delete(@PathVariable Long id) {
-        regionService.removeWithChildrenById(id);
-
-        return R.ok();
+        return regionService.removeWithChildrenById(id);
     }
 
 }

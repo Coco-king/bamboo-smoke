@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import io.renren.common.exception.ErrorConstant;
 import io.renren.common.exception.RRException;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -82,23 +83,23 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     public R checkAndUpdate(RegionEntity region) {
         Long parentId = region.getParentId();
         Long id = region.getId();
-        Assert.isNotEqual(parentId, id, "区域的上级区域不能是自己");
+        Assert.isNotEqual(parentId, id, ErrorConstant.REGION_PARENT_NOT_EQUAL_SELF);
 
-        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, true);
-        Assert.isNotEmpty(tree, "未找到待修改节点的信息");
-        Assert.isTrue(tree.size() == 1, "查询到待修改节点有多个");
+        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, false);
+        Assert.isNotEmpty(tree, ErrorConstant.REGION_NOT_FOUND);
+        Assert.isTrue(tree.size() == 1, ErrorConstant.REGION_FOUND_MUST_UNIQUE);
 
         //获取当前节点的深度
         int depth = getDepth(tree.get(0));
 
         //获取待移动的父级节点信息
         RegionEntity parent = baseMapper.selectById(parentId);
-        Assert.isNotNull(parent, "未找到待修改节点的父节点信息");
+        Assert.isNotNull(parent, ErrorConstant.REGION_PARENT_NOT_FOUND);
         //获取父级的Level，由于层级是从0开始的，所以加一
         int level = ObjectUtil.defaultIfNull(parent.getLevel(), 0) + 1;
 
         //如果当前节点的深度 + 父节点的level > 4，就不能移动
-        Assert.isTrue(depth + level <= 4, "区域列表最大层级为4级，精确到（区/县），请检查上级区域是否正确");
+        Assert.isTrue(depth + level <= 4, ErrorConstant.REGION_MAX_LEVEL_OVERFLOW);
 
         RegionEntity update = new RegionEntity();
         update.setId(region.getId());
@@ -109,19 +110,48 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
         try {
             baseMapper.updateById(update);
         } catch (Exception e) {
-            log.error("更新失败，数据库中唯一索引限制，同一个父级区域下不能有名字相同的区域", e);
-            throw new RRException("同一个父级区域下不能有名字相同的区域");
+            log.error(ErrorConstant.REGION_UPDATE_UNIQUE_ERROR, e);
+            throw new RRException(ErrorConstant.REGION_PARENT_WITH_SAME_NAME);
         }
-        return R.ok().push("newParentId", parentId.toString()).push("oldParentId", tree.get(0).getParentId().toString());
+        return R.ok().push("newParentId", parentId.toString()).push("oldItem", tree.get(0));
     }
 
     @Override
-    public void removeWithChildrenById(Long id) {
-        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, true);
+    public R removeWithChildrenById(Long id) {
+        List<RegionParentVo> tree = this.findAllWithTree(Integer.MAX_VALUE, id, false);
 
         List<Long> ids = Lists.newArrayList(id);
         this.getChildrenId(tree.get(0), ids);
-        baseMapper.deleteBatchIds(ids);
+        boolean isSuccess = baseMapper.deleteBatchIds(ids) > 0;
+        if (isSuccess) {
+            RegionEntity grandFather = baseMapper.selectById(tree.get(0).getParentId());
+            if (grandFather != null) {
+                return R.ok().push("grandFatherId", grandFather.getParentId().toString());
+            }
+            return R.ok();
+        }
+        return R.error("没有任何数据被删除");
+    }
+
+    @Override
+    public R saveRegion(RegionEntity region) {
+        RegionEntity parent = baseMapper.selectById(region.getParentId());
+        Assert.isNotNull(parent, "父节点信息有误");
+        Assert.isTrue(parent.getLevel() < 3, ErrorConstant.REGION_MAX_LEVEL_OVERFLOW);
+
+        region.setId(Long.parseLong(region.getValue()));
+        region.setLevel(parent.getLevel() + 1);
+
+        try {
+            baseMapper.insert(region);
+        } catch (Exception e) {
+            log.error(ErrorConstant.REGION_UPDATE_UNIQUE_ERROR, e);
+            throw new RRException(e.getMessage().contains("PRIMARY") ?
+                ErrorConstant.REGION_VALUE_MUST_UNIQUE :
+                ErrorConstant.REGION_PARENT_WITH_SAME_NAME);
+        }
+
+        return R.ok().push("newParentId", region.getParentId().toString());
     }
 
     private void getChildrenId(RegionParentVo tree, List<Long> childrenIds) {
@@ -188,8 +218,11 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
      * 查询指定节点下的所有节点
      */
     private List<RegionParentVo> eagerLoad(Integer maxLevel, Long rootId) {
+        // 这里是自己写的xml，需指定查询未删除的条件
         List<RegionParentVo> list = baseMapper.selectRegionParentList(
-            new QueryWrapper<RegionEntity>().le("level", maxLevel)
+            new QueryWrapper<RegionEntity>()
+                .le("level", maxLevel)
+                .eq("is_deleted", false)
         );
 
         //获取所有根节点

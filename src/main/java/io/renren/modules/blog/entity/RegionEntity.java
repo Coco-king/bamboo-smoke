@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,13 +29,16 @@ public class RegionEntity implements Serializable {
     private Long id;
 
     /** 该地区的上级区域 */
+    @NotNull(message = "上级区域不能为空")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /** 地区名称 */
+    @NotBlank(message = "区域名称不能为空")
     private String name;
 
     /** 地区对应值 */
+    @NotBlank(message = "地区对应值不能为空")
     private String value;
 
     /** 区域层级 */
