@@ -1,4 +1,4 @@
-package io.renren.modules.blog.admin.controller;
+package io.renren.modules.blog.controller.admin;
 
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;

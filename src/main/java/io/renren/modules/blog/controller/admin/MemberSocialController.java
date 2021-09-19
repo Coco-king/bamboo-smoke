@@ -1,34 +1,34 @@
-package io.renren.modules.blog.admin.controller;
+package io.renren.modules.blog.controller.admin;
 
 import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.CategoryEntity;
-import io.renren.modules.blog.service.CategoryService;
+import io.renren.modules.blog.entity.MemberSocialEntity;
+import io.renren.modules.blog.service.MemberSocialService;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 文章分类表
+ * 用户与第三方账户绑定表
  *
  * @author codecrab
  * @since 2021-09-11 19:29:43
  */
 @RestController
-@RequestMapping("admin/category")
-public class CategoryController {
+@RequestMapping("admin/membersocial")
+public class MemberSocialController {
 
     @Resource
-    private CategoryService categoryService;
+    private MemberSocialService memberSocialService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = categoryService.queryPage(params);
+        PageUtils page = memberSocialService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class CategoryController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        CategoryEntity category = categoryService.getById(id);
+        MemberSocialEntity memberSocial = memberSocialService.getById(id);
 
-        return R.ok().push("category", category);
+        return R.ok().push("memberSocial", memberSocial);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody CategoryEntity category) {
-        categoryService.save(category);
+    public R save(@RequestBody MemberSocialEntity memberSocial) {
+        memberSocialService.save(memberSocial);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class CategoryController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody CategoryEntity category) {
-        categoryService.updateById(category);
+    public R update(@RequestBody MemberSocialEntity memberSocial) {
+        memberSocialService.updateById(memberSocial);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class CategoryController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        categoryService.removeByIds(Arrays.asList(ids));
+        memberSocialService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

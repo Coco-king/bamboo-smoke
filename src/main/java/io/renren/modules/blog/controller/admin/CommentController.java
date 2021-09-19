@@ -1,34 +1,34 @@
-package io.renren.modules.blog.admin.controller;
+package io.renren.modules.blog.controller.admin;
 
 import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.MemberSocialEntity;
-import io.renren.modules.blog.service.MemberSocialService;
+import io.renren.modules.blog.entity.CommentEntity;
+import io.renren.modules.blog.service.CommentService;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 用户与第三方账户绑定表
+ * 用户评论表
  *
  * @author codecrab
  * @since 2021-09-11 19:29:43
  */
 @RestController
-@RequestMapping("admin/membersocial")
-public class MemberSocialController {
+@RequestMapping("admin/comment")
+public class CommentController {
 
     @Resource
-    private MemberSocialService memberSocialService;
+    private CommentService commentService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = memberSocialService.queryPage(params);
+        PageUtils page = commentService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class MemberSocialController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        MemberSocialEntity memberSocial = memberSocialService.getById(id);
+        CommentEntity comment = commentService.getById(id);
 
-        return R.ok().push("memberSocial", memberSocial);
+        return R.ok().push("comment", comment);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody MemberSocialEntity memberSocial) {
-        memberSocialService.save(memberSocial);
+    public R save(@RequestBody CommentEntity comment) {
+        commentService.save(comment);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class MemberSocialController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody MemberSocialEntity memberSocial) {
-        memberSocialService.updateById(memberSocial);
+    public R update(@RequestBody CommentEntity comment) {
+        commentService.updateById(comment);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class MemberSocialController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        memberSocialService.removeByIds(Arrays.asList(ids));
+        commentService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
