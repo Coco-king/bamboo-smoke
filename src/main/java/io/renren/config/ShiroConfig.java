@@ -72,6 +72,7 @@ public class ShiroConfig {
         filterMap.put("/v3/**", "anon");
         filterMap.put("/docs.html", "anon");
         filterMap.put("/captcha.jpg", "anon");
+        filterMap.put("/api/oss/**", "anon");
         filterMap.put("/api/**", "member");
         filterMap.put("/admin/**", "admin");
         filterMap.put("/**", "admin");

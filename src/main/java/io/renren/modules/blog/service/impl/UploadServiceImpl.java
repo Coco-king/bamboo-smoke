@@ -1,7 +1,7 @@
 package io.renren.modules.blog.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,16 +31,12 @@ public class UploadServiceImpl implements UploadService {
     @Resource
     private SysConfigService sysConfigService;
 
+    @Resource
+    private OSS ossClient;
+
     @Override
     public Map<String, String> createPolicy(String type) {
         CloudStorageConfig cloudConfig = sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
-
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(
-            cloudConfig.getAliyunEndPoint(),
-            cloudConfig.getAliyunAccessKeyId(),
-            cloudConfig.getAliyunAccessKeySecret()
-        );
 
         String host = "https://" + cloudConfig.getAliyunBucketName() + "." + cloudConfig.getAliyunEndPoint();
         // callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。
@@ -69,10 +66,28 @@ public class UploadServiceImpl implements UploadService {
             // respMap.put("expire", formatISO8601Date(expiration));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } finally {
-            ossClient.shutdown();
         }
         return respMap;
+    }
+
+    @Override
+    public void removeFile(List<String> urls) {
+        CloudStorageConfig cloudConfig = sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
+
+        try {
+            // 需要截断的：https://bamboo-smoke-img.oss-cn-shanghai.aliyuncs.com/
+            String host = StrUtil.format("https://{}.{}/", cloudConfig.getAliyunBucketName(), cloudConfig.getAliyunEndPoint());
+            urls.forEach(url -> {
+                if (StrUtil.isNotBlank(url)) {
+                    // 需要的：avatar/2021/04/26/8b40dde3d8ea4a2e8303fa3b279b8daa.jpg
+                    String objectName = url.substring(host.length());
+
+                    ossClient.deleteObject(cloudConfig.getAliyunBucketName(), objectName);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

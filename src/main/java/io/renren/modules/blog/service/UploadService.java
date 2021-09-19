@@ -1,5 +1,6 @@
 package io.renren.modules.blog.service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,4 +11,5 @@ public interface UploadService {
 
     Map<String, String> createPolicy(String type);
 
+    void removeFile(List<String> urls);
 }
