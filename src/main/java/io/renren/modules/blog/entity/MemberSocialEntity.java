@@ -52,6 +52,7 @@ public class MemberSocialEntity implements Serializable {
     private Long expiresIn;
 
     /** 绑定状态 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 创建日期 */

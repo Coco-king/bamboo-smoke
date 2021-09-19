@@ -13,5 +13,12 @@ public class ErrorConstant {
     public static final String REGION_UPDATE_UNIQUE_ERROR = "更新失败，数据库中唯一索引限制，同一个父级区域下不能有名字相同的区域";
     public static final String REGION_PARENT_WITH_SAME_NAME = "同一个父级区域下不能有名字相同的区域";
     public static final String REGION_VALUE_MUST_UNIQUE = "地区对应值重复请更换后重试";
+
     public static final String OSS_REMOVE_FILE_URL_NULL = "删除的图片路径不能为空";
+
+    public static final String MEMBER_PASS_MUST_EQUAL_REPASS = "两次输入密码不一致";
+    public static final String MEMBER_WITH_SAME_MEMBER_NAME = "用户名已存在，请换一个重试";
+    public static final String MEMBER_WITH_SAME_EMAIL = "该邮箱已被使用，请换一个重试";
+    public static final String MEMBER_WITH_SAME_MOBILE = "该手机号已被使用，请换一个重试";
+    public static final String MEMBER_WILL_UPDATE_IS_NULL = "待更新会员信息未找到";
 }

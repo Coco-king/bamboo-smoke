@@ -38,9 +38,11 @@ public class CategoryEntity implements Serializable {
     private String icon;
 
     /** 该分类的内容数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer articleCount;
 
     /** 排序编码 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer order;
 
     /** 父级分类的ID */
@@ -54,6 +56,7 @@ public class CategoryEntity implements Serializable {
     private String metaDescription;
 
     /** 分类状态 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 逻辑删除（0：未删除，1：已删除） */

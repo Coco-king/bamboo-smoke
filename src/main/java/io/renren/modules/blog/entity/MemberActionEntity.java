@@ -35,6 +35,7 @@ public class MemberActionEntity implements Serializable {
     private String action;
 
     /** 得分 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer point;
 
     /** 关联的帖子ID */
@@ -44,6 +45,7 @@ public class MemberActionEntity implements Serializable {
     private String commentId;
 
     /** 状态 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 创建日期 */

@@ -1,16 +1,19 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -33,18 +36,16 @@ public class MemberEntity implements Serializable {
     private Long id;
 
     /** 用户名 */
-    @NotNull(message = "用户名不能为空", groups = AddGroup.class)
+    @NotBlank(message = "用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String memberName;
 
     /** 密码 */
-    @JsonIgnore
-    @NotNull(message = "密码不能为空", groups = AddGroup.class)
+    @NotBlank(message = "密码不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String password;
 
     /** 确认密码 */
-    @JsonIgnore
     @TableField(exist = false)
-    @NotNull(message = "确认密码不能为空", groups = AddGroup.class)
+    @NotBlank(message = "确认密码不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String rePass;
 
     /** 盐 */
@@ -54,42 +55,56 @@ public class MemberEntity implements Serializable {
     private String authName;
 
     /** 邮箱 */
+    @NotBlank(message = "邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
+    @Email(message = "邮箱格式不合法", groups = {AddGroup.class, UpdateGroup.class})
     private String email;
 
-    /** 手机电话 */
+    /** 手机号码 */
+    @NotBlank(message = "手机号码不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String mobile;
 
     /** 所在城市 */
     private String city;
 
     /** 积分 */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @NotNull(message = "积分不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer point;
 
     /** 个性签名 */
     private String sign;
 
     /** 性别 */
+    @NotBlank(message = "性别不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String gender;
 
     /** 微信号 */
     private String wechat;
 
     /** vip等级 */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @NotNull(message = "vip等级不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer vipLevel;
 
     /** 生日 */
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     /** 头像 */
+    @NotBlank(message = "头像不能为空", groups = {AddGroup.class, UpdateGroup.class})
+    @URL(message = "头像不是一个合法的URL地址", groups = {AddGroup.class, UpdateGroup.class})
     private String avatar;
 
     /** 内容数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer articleCount;
 
     /** 评论数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer commentCount;
 
     /** 状态（0：未激活邮箱，1：正常，-1：已封禁） */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @NotNull(message = "状态不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer status;
 
     /** 激活邮件地址 */

@@ -49,15 +49,19 @@ public class ArticleEntity implements Serializable {
     private String memberAuthName;
 
     /** 点赞人数 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer voteUp;
 
     /** 点踩人数 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer voteDown;
 
     /** 访问量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer viewCount;
 
     /** 评论数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer commentCount;
 
     /** 是否为精华 */
@@ -65,9 +69,11 @@ public class ArticleEntity implements Serializable {
     private Boolean recommend;
 
     /** 置顶等级 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer level;
 
     /** 状态（0：审核未通过 1：审核通过） */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 逻辑删除（0：未删除，1：已删除） */

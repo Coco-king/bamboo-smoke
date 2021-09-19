@@ -48,9 +48,11 @@ public class MemberMessageEntity implements Serializable {
     private String content;
 
     /** 消息类型（0：系统消息，1：回复文章，2：回复评论） */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer type;
 
     /** 消息状态（0：未读，1：已读） */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 创建日期 */

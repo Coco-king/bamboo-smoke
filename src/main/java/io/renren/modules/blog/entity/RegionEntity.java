@@ -42,6 +42,7 @@ public class RegionEntity implements Serializable {
     private String value;
 
     /** 区域层级 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer level;
 
     /** 逻辑删除（0：未删除，1：已删除） */

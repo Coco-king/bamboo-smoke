@@ -47,15 +47,19 @@ public class CommentEntity implements Serializable {
     private String memberAuthName;
 
     /** “顶”的数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer voteUp;
 
     /** “踩”的数量 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer voteDown;
 
     /** 置顶等级 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer level;
 
     /** 评论的状态 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 创建日期 */

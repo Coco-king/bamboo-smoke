@@ -2,6 +2,9 @@ package io.renren.modules.blog.controller.admin;
 
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.blog.entity.MemberEntity;
 import io.renren.modules.blog.service.MemberService;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +51,8 @@ public class MemberController {
      */
     @PostMapping("/save")
     public R save(@RequestBody MemberEntity member) {
-        memberService.save(member);
+        ValidatorUtils.validateEntity(member, AddGroup.class);
+        memberService.saveMember(member);
 
         return R.ok();
     }
@@ -58,7 +62,8 @@ public class MemberController {
      */
     @PutMapping("/update")
     public R update(@RequestBody MemberEntity member) {
-        memberService.updateById(member);
+        ValidatorUtils.validateEntity(member, UpdateGroup.class);
+        memberService.updateMember(member);
 
         return R.ok();
     }

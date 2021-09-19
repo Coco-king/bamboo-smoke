@@ -41,6 +41,7 @@ public class MemberCollectionEntity implements Serializable {
     private Long articleMemberId;
 
     /** 消息状态 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer status;
 
     /** 创建日期 */

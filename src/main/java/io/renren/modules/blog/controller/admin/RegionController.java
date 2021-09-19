@@ -65,7 +65,7 @@ public class RegionController {
     }
 
     /**
-     * 信息
+     * 获取父级路径
      */
     @GetMapping("/path")
     public R path(

@@ -49,4 +49,10 @@ public abstract class Assert {
             throw new RRException(message);
         }
     }
+
+    public static void isFalse(Boolean bool, String message) {
+        if (BooleanUtil.isTrue(bool)) {
+            throw new RRException(message);
+        }
+    }
 }
