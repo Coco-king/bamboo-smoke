@@ -2,6 +2,8 @@ package io.renren.modules.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,8 +16,10 @@ import io.renren.common.validator.Assert;
 import io.renren.modules.blog.entity.MemberEntity;
 import io.renren.modules.blog.mapper.MemberMapper;
 import io.renren.modules.blog.service.MemberService;
+import io.renren.modules.blog.vo.MemberSearchVo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -29,9 +33,31 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        // 把map转换为搜索实体类
+        MemberSearchVo searchVo = BeanUtil.toBean(params, MemberSearchVo.class);
+        // 搜索Id
+        String id = searchVo.getId();
+        // 搜索关键字
+        String key = searchVo.getKey();
+        // 性别条件
+        String gender = searchVo.getGender();
+        // 状态条件
+        String status = searchVo.getStatus();
+        // 注册日期区间条件
+        LocalDateTime beginTime = searchVo.getCreateBeginTime();
+        LocalDateTime endTime = searchVo.getCreateEndTime();
+
         IPage<MemberEntity> page = this.page(
             new Query<MemberEntity>().getPage(params),
-            new QueryWrapper<>()
+            new QueryWrapper<MemberEntity>()
+                .eq(StrUtil.isNotBlank(id), "id", id)
+                .and(StrUtil.isNotBlank(key), wrapper -> wrapper
+                    .like("email", key).or()
+                    .like("member_name", key).or()
+                    .like("mobile", key))
+                .eq(StrUtil.isNotBlank(gender), "gender", gender)
+                .eq(StrUtil.isNotBlank(status), "status", status)
+                .between(!ObjectUtil.hasNull(beginTime, endTime), "create_time", beginTime, endTime)
         );
 
         return new PageUtils(page);
