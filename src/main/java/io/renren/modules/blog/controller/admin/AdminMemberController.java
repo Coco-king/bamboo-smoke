@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("admin/member")
-public class MemberController {
+public class AdminMemberController {
 
     @Resource
     private MemberService memberService;

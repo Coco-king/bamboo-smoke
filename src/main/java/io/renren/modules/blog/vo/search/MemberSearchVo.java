@@ -1,6 +1,7 @@
 package io.renren.modules.blog.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -9,11 +10,8 @@ import java.time.LocalDateTime;
  * @since 2021年09月20日 下午 05:39
  */
 @Data
-public class MemberSearchVo {
-
-    private String id;
-
-    private String key;
+@EqualsAndHashCode(callSuper = false)
+public class MemberSearchVo extends SearchBaseVo {
 
     private String gender;
 
@@ -22,5 +20,6 @@ public class MemberSearchVo {
     private LocalDateTime createBeginTime;
 
     private LocalDateTime createEndTime;
+
 }
 

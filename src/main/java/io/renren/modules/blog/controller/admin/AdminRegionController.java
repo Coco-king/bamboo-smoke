@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @Api(tags = "区域管理")
 @RequestMapping("admin/region")
-public class RegionController {
+public class AdminRegionController {
 
     @Resource
     private RegionService regionService;

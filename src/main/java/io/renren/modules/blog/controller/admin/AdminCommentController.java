@@ -3,32 +3,32 @@ package io.renren.modules.blog.controller.admin;
 import org.springframework.web.bind.annotation.*;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.blog.entity.MemberMessageEntity;
-import io.renren.modules.blog.service.MemberMessageService;
+import io.renren.modules.blog.entity.CommentEntity;
+import io.renren.modules.blog.service.CommentService;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 消息表
+ * 用户评论表
  *
  * @author codecrab
  * @since 2021-09-11 19:29:43
  */
 @RestController
-@RequestMapping("admin/membermessage")
-public class MemberMessageController {
+@RequestMapping("admin/comment")
+public class AdminCommentController {
 
     @Resource
-    private MemberMessageService memberMessageService;
+    private CommentService commentService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = memberMessageService.queryPage(params);
+        PageUtils page = commentService.queryPage(params);
 
         return R.ok().push("page", page);
     }
@@ -38,17 +38,17 @@ public class MemberMessageController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        MemberMessageEntity memberMessage = memberMessageService.getById(id);
+        CommentEntity comment = commentService.getById(id);
 
-        return R.ok().push("memberMessage", memberMessage);
+        return R.ok().push("comment", comment);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody MemberMessageEntity memberMessage) {
-        memberMessageService.save(memberMessage);
+    public R save(@RequestBody CommentEntity comment) {
+        commentService.save(comment);
 
         return R.ok();
     }
@@ -57,8 +57,8 @@ public class MemberMessageController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@RequestBody MemberMessageEntity memberMessage) {
-        memberMessageService.updateById(memberMessage);
+    public R update(@RequestBody CommentEntity comment) {
+        commentService.updateById(comment);
 
         return R.ok();
     }
@@ -68,7 +68,7 @@ public class MemberMessageController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        memberMessageService.removeByIds(Arrays.asList(ids));
+        commentService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
