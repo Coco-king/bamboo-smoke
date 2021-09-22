@@ -3,12 +3,13 @@ package io.renren.modules.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.Query;
 import io.renren.modules.blog.entity.ArticleEntity;
 import io.renren.modules.blog.mapper.ArticleMapper;
 import io.renren.modules.blog.service.ArticleService;
+import io.renren.modules.blog.vo.ArticleVo;
 import org.springframework.stereotype.Service;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
 
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleEntity
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<ArticleEntity> page = this.page(
+        IPage<ArticleVo> page = baseMapper.selectArticleVoPage(
                 new Query<ArticleEntity>().getPage(params),
                 new QueryWrapper<>()
         );

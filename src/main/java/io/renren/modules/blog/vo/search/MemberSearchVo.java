@@ -1,4 +1,4 @@
-package io.renren.modules.blog.vo;
+package io.renren.modules.blog.vo.search;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

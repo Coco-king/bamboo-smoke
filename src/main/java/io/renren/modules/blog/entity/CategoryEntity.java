@@ -42,6 +42,7 @@ public class CategoryEntity implements Serializable {
     private Integer articleCount;
 
     /** 排序编码 */
+    @TableField("`order`")
     @JsonSerialize(using = ToStringSerializer.class)
     private Integer order;
 

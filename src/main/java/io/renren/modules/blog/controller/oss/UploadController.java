@@ -22,9 +22,14 @@ public class UploadController {
     private UploadService uploadService;
 
     @GetMapping("/api/oss/policy")
-    public R upload(@RequestParam(defaultValue = "default") String type) {
+    public R policy(@RequestParam(defaultValue = "default") String type) {
         Map<String, String> policy = uploadService.createPolicy(type);
         return R.ok().push("data", policy);
+    }
+
+    @GetMapping("/api/oss/upload/{type}")
+    public R upload(@PathVariable String type) {
+        return R.ok().push("data", type);
     }
 
     @DeleteMapping("/api/oss/remove")

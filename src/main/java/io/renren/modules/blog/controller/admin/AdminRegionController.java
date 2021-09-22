@@ -5,14 +5,10 @@ import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.blog.entity.RegionEntity;
 import io.renren.modules.blog.service.RegionService;
-import io.renren.modules.blog.vo.RegionParentVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +18,6 @@ import java.util.Map;
  * @since 2021-09-14 13:50:23
  */
 @RestController
-@Api(tags = "区域管理")
 @RequestMapping("admin/region")
 public class AdminRegionController {
 
@@ -40,21 +35,6 @@ public class AdminRegionController {
     }
 
     /**
-     * 获取指定parentId和他的所有下级区域信息
-     */
-    @ApiOperation("地域信息树型数据")
-    @GetMapping("/list/tree")
-    public R listTree(
-        @RequestParam(required = false, defaultValue = "100") Integer maxLevel,
-        @RequestParam(required = false, defaultValue = "false") Boolean isLazy,
-        @RequestParam(required = false, defaultValue = "1") Long parentId
-    ) {
-        List<RegionParentVo> list = regionService.findAllWithTree(maxLevel, parentId, isLazy);
-
-        return R.ok().push("list", list);
-    }
-
-    /**
      * 信息
      */
     @GetMapping("/info/{id}")
@@ -62,19 +42,6 @@ public class AdminRegionController {
         RegionEntity region = regionService.getById(id);
 
         return R.ok().push("region", region);
-    }
-
-    /**
-     * 获取父级路径
-     */
-    @GetMapping("/path")
-    public R path(
-        @RequestParam Long id,
-        @RequestParam(defaultValue = "true") Boolean excludeSelf
-    ) {
-        List<String> cascadeData = regionService.getParentPath(id, excludeSelf);
-
-        return R.ok().push("cascadeData", cascadeData);
     }
 
     /**

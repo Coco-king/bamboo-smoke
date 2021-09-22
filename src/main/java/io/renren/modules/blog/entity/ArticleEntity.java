@@ -28,7 +28,7 @@ public class ArticleEntity implements Serializable {
     /** 标题 */
     private String title;
 
-    /** 标题 */
+    /** 封面 */
     private String coverImage;
 
     /** 内容 */

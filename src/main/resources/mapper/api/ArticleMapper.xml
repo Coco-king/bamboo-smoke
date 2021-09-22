@@ -3,7 +3,7 @@
 
 <mapper namespace="io.renren.modules.blog.mapper.ArticleMapper">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.blog.entity.ArticleEntity" id="articleMap">
         <result property="id" column="id"/>
         <result property="title" column="title"/>
@@ -24,5 +24,16 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+
+    <select id="selectArticleVoPage" resultType="io.renren.modules.blog.vo.ArticleVo">
+        SELECT a.*,
+               m.member_name,
+               m.auth_name,
+               c.`name` category_name
+        FROM bs_article a
+                 LEFT JOIN bs_member m ON a.member_id = m.id
+                 LEFT JOIN bs_category c ON a.category_id = c.id
+            ${ew.customSqlSegment}
+    </select>
 
 </mapper>

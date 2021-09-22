@@ -16,7 +16,7 @@ import io.renren.common.validator.Assert;
 import io.renren.modules.blog.entity.MemberEntity;
 import io.renren.modules.blog.mapper.MemberMapper;
 import io.renren.modules.blog.service.MemberService;
-import io.renren.modules.blog.vo.MemberSearchVo;
+import io.renren.modules.blog.vo.search.MemberSearchVo;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
