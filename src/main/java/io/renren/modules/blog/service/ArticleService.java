@@ -3,6 +3,7 @@ package io.renren.modules.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.blog.entity.ArticleEntity;
+import io.renren.modules.blog.vo.ArticleVo;
 
 import java.util.Map;
 
@@ -15,5 +16,7 @@ import java.util.Map;
 public interface ArticleService extends IService<ArticleEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    ArticleVo getArticleVoById(Long id);
 }
 

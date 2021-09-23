@@ -5,7 +5,9 @@ import io.renren.common.exception.ErrorConstant;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
 import io.renren.modules.blog.service.UploadService;
+import io.renren.modules.blog.vo.EditorUploadVo;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,9 +29,9 @@ public class UploadController {
         return R.ok().push("data", policy);
     }
 
-    @GetMapping("/api/oss/upload/{type}")
-    public R upload(@PathVariable String type) {
-        return R.ok().push("data", type);
+    @PostMapping("/api/oss/upload/{type}")
+    public EditorUploadVo upload(@PathVariable String type, MultipartFile file) {
+        return EditorUploadVo.ok(new EditorUploadVo.DataDTO("https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg", "描述", "https://www.baidu.com"));
     }
 
     @DeleteMapping("/api/oss/remove")

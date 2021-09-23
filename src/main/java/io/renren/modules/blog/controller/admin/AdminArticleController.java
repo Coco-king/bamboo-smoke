@@ -1,10 +1,14 @@
 package io.renren.modules.blog.controller.admin;
 
-import org.springframework.web.bind.annotation.*;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.blog.entity.ArticleEntity;
 import io.renren.modules.blog.service.ArticleService;
+import io.renren.modules.blog.vo.ArticleExamineVo;
+import io.renren.modules.blog.vo.ArticleVo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -38,7 +42,7 @@ public class AdminArticleController {
      */
     @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        ArticleEntity article = articleService.getById(id);
+        ArticleVo article = articleService.getArticleVoById(id);
 
         return R.ok().push("article", article);
     }
@@ -61,6 +65,23 @@ public class AdminArticleController {
         articleService.updateById(article);
 
         return R.ok();
+    }
+
+    /**
+     * 审核不通过/通过
+     */
+    @PutMapping("/examine")
+    public R toExamine(@RequestBody ArticleExamineVo examineVo) {
+        ValidatorUtils.validateEntity(examineVo);
+
+        boolean update = articleService.update(
+            new UpdateWrapper<ArticleEntity>()
+                .in("id", examineVo.getIds())
+                .eq("status", 0)
+                .set("status", examineVo.getStatus())
+        );
+
+        return update ? R.ok() : R.error("修改失败：没有任何数据被改变");
     }
 
     /**

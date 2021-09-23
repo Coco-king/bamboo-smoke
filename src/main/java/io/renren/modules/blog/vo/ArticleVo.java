@@ -40,6 +40,8 @@ public class ArticleVo {
     /** 会员名 */
     private String memberName;
 
+    private String content;
+
     /** 用户认证标识 */
     private String memberAuthName;
 
