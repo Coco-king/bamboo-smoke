@@ -28,6 +28,9 @@ public class CategoryEntity implements Serializable {
     /** 标题 */
     private String name;
 
+    /** 链接 */
+    private String href;
+
     /** 内容描述 */
     private String content;
 
