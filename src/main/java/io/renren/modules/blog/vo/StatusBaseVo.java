@@ -11,12 +11,12 @@ import java.util.List;
  * @since 2021年09月23日 下午 4:43
  */
 @Data
-public class ArticleExamineVo {
+public class StatusBaseVo {
 
-    @NotEmpty(message = "需要审核的文章不能为空")
+    @NotEmpty(message = "需要操作的对象ID不能为空")
     private List<Long> ids;
 
-    @NotNull(message = "必须选择是否审核通过")
+    @NotNull(message = "必须输入将要修改的状态")
     private Integer status;
 
 }
