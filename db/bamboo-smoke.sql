@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 23/09/2021 18:04:27
+ Date: 24/09/2021 17:38:29
 */
 
 SET NAMES utf8mb4;
@@ -51,11 +51,11 @@ CREATE TABLE `bs_article`
 INSERT INTO `bs_article`
 VALUES (1, '测试',
         'https://bamboo-smoke-img.oss-cn-shanghai.aliyuncs.com/avatar/2021/09/505a4825-10a5-4992-8b78-feeede87f47a_v2-7809cca37089b7c2623e8c7b54c2e18f_r.jpg',
-        '<p>2313</p>', '1', 1, 1, '管理员', 0, 0, 0, 0, 0, 0, -1, 0, '2021-09-22 13:40:00', '2021-09-23 16:58:48');
+        '<p>2313</p>', '1', 1, 1, '管理员', 0, 0, 0, 0, 0, 0, -1, 0, '2021-09-22 13:40:00', '2021-09-24 15:35:19');
 INSERT INTO `bs_article`
 VALUES (2, '123', '',
         '<pre><code class=\"Java\"><span class=\"hljs-annotation\">@Override</span>\n<span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title\">addCorsMappings</span>(CorsRegistry registry) {\n    registry.addMapping(<span class=\"hljs-string\">\"/**\"</span>)\n        .allowedOrigins(<span class=\"hljs-string\">\"*\"</span>)\n        .allowCredentials(<span class=\"hljs-keyword\">true</span>)\n        .allowedMethods(<span class=\"hljs-string\">\"GET\"</span>, <span class=\"hljs-string\">\"POST\"</span>, <span class=\"hljs-string\">\"PUT\"</span>, <span class=\"hljs-string\">\"DELETE\"</span>, <span class=\"hljs-string\">\"OPTIONS\"</span>)\n        .maxAge(<span class=\"hljs-number\">3600</span>);\n}</code></pre>',
-        '1', 2, 1, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2021-09-23 13:30:25', '2021-09-23 16:58:42');
+        '1', 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2021-09-23 13:30:25', '2021-09-24 17:05:04');
 
 -- ----------------------------
 -- Table structure for bs_category
@@ -65,6 +65,7 @@ CREATE TABLE `bs_category`
 (
     `id`               bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `name`             varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
+    `href`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '链接',
     `content`          text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '内容描述',
     `summary`          text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '分类概要',
     `icon`             varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
@@ -84,17 +85,23 @@ CREATE TABLE `bs_category`
 -- Records of bs_category
 -- ----------------------------
 INSERT INTO `bs_category`
-VALUES (1, '提问', NULL, NULL, 'tiwen', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:20:50');
+VALUES (1, '提问', 'tiwen', NULL, NULL, 'tiwen', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:20:50');
 INSERT INTO `bs_category`
-VALUES (2, '分享', NULL, NULL, 'fenxiang', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:35:37');
+VALUES (2, '分享', 'fenxiang', NULL, NULL, 'fenxiang', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:35:37');
 INSERT INTO `bs_category`
-VALUES (3, '讨论', NULL, NULL, 'taolun', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:35:50');
+VALUES (3, '讨论', 'taolun', NULL, NULL, 'taolun', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:35:50');
 INSERT INTO `bs_category`
-VALUES (4, '建议', NULL, NULL, 'jianyi', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:36:07');
+VALUES (4, '建议', 'jianyi', NULL, NULL, 'jianyi', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:36:07');
 INSERT INTO `bs_category`
-VALUES (5, '动态', NULL, NULL, 'dongtai', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:36:16');
+VALUES (5, '动态', 'dongtai', NULL, NULL, 'dongtai', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:36:16');
 INSERT INTO `bs_category`
-VALUES (6, '公告', NULL, NULL, 'gonggao', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50', '2021-09-22 10:36:26');
+VALUES (6, '公告', 'gonggao', NULL, NULL, 'gonggao', 0, 0, NULL, NULL, NULL, 0, 0, '2021-09-03 15:16:50',
+        '2021-09-22 10:36:26');
 
 -- ----------------------------
 -- Table structure for bs_comment
@@ -160,17 +167,17 @@ VALUES (1, '竹隐寒烟', '$2a$10$uI5dazR3fvrw4yy1OuTHHOBR1fS33O4Bm.cnygm9E1Kcx
         '管理员', '3060550682@qq.com', '17710810624', '411024', 10000000, '我们在青春里遇见，写下纯白的誓言，在夏天来临之前。', '1', 'codecrab', 9,
         '2000-06-24',
         'https://bamboo-smoke-img.oss-cn-shanghai.aliyuncs.com/avatar/2021/09/505a4825-10a5-4992-8b78-feeede87f47a_v2-7809cca37089b7c2623e8c7b54c2e18f_r.jpg',
-        0, 0, 0, 'OW_RQB1wLLxhTdmnE4ytWBO6p2rSY6Rh', NULL, 0, '2021-09-19 15:10:02', '2021-09-19 18:06:09');
+        0, 0, 1, 'OW_RQB1wLLxhTdmnE4ytWBO6p2rSY6Rh', NULL, 0, '2021-09-19 15:10:02', '2021-09-24 09:56:10');
 INSERT INTO `bs_member`
 VALUES (2, 'codecrab', '$2a$10$uI5dazR3fvrw4yy1OuTHHOeFch8G3WViVWXm1PLGtQIIo5rAitQbG', '$2a$10$uI5dazR3fvrw4yy1OuTHHO',
         '测试', '3109309826@qq.com', '13522246024', '310115', 0, '哈哈哈', '0', '', 0, '2000-06-24',
         'https://bamboo-smoke-img.oss-cn-shanghai.aliyuncs.com/avatar/2021/09/77efbbea-6904-41e6-8536-5677361a2ee3_头像 (2).jpg',
-        0, 0, 0, '9GZOCKHHFw_zk2bEVQDMdQ_lvcVttGXX', NULL, 0, '2021-09-19 17:11:44', '2021-09-19 18:22:15');
+        0, 0, 1, '9GZOCKHHFw_zk2bEVQDMdQ_lvcVttGXX', NULL, 0, '2021-09-19 17:11:44', '2021-09-19 18:22:15');
 INSERT INTO `bs_member`
-VALUES (3, '北觅', '$2a$10$Ol4a/cKqhUeqNZRGOxD1uuPBW7AnOK2x.lAVCfaTTTTHBOMIupVNG', '$2a$10$Ol4a/cKqhUeqNZRGOxD1uu', '',
-        '1753515721@qq.com', '17122840624', '411101', 0, '你好呀', '1', '', 0, '2000-06-24',
+VALUES (3, '北觅code', '$2a$10$Ol4a/cKqhUeqNZRGOxD1uuPBW7AnOK2x.lAVCfaTTTTHBOMIupVNG', '$2a$10$Ol4a/cKqhUeqNZRGOxD1uu',
+        '', '1753515721@qq.com', '17122840624', '411101', 0, '你好呀', '1', '', 0, '2000-06-24',
         'https://bamboo-smoke-img.oss-cn-shanghai.aliyuncs.com/avatar/2021/09/efce50be-3360-4678-8dd6-924984e2eeca_QQ图片20200714005625.jpg',
-        0, 0, 0, 'lPZvjl9GH59GIQ1aryIGKXxG9HxQSTHMzWGTFEAssC9hmRa_wlFHOfTdKqRfyxQi', NULL, 0, '2021-09-19 18:23:59',
+        0, 0, 1, 'lPZvjl9GH59GIQ1aryIGKXxG9HxQSTHMzWGTFEAssC9hmRa_wlFHOfTdKqRfyxQi', NULL, 0, '2021-09-19 18:23:59',
         '2021-09-19 18:23:59');
 
 -- ----------------------------
@@ -8022,7 +8029,7 @@ CREATE TABLE `qrtz_scheduler_state`
 -- Records of qrtz_scheduler_state
 -- ----------------------------
 INSERT INTO `qrtz_scheduler_state`
-VALUES ('RenrenScheduler', 'MD20SHJQ02571632390954553', 1632391451180, 15000);
+VALUES ('RenrenScheduler', 'MD20SHJQ02571632474014442', 1632474571208, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -8106,8 +8113,8 @@ CREATE TABLE `qrtz_triggers`
 -- Records of qrtz_triggers
 -- ----------------------------
 INSERT INTO `qrtz_triggers`
-VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1632393000000, 1632391200000, 5, 'WAITING',
-        'CRON', 1627479868000, 0, NULL, 2,
+VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1632475800000, -1, 5, 'WAITING', 'CRON',
+        1627479868000, 0, NULL, 2,
         0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017AE86906B87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
 
 -- ----------------------------
@@ -8148,7 +8155,7 @@ CREATE TABLE `schedule_job_log`
     `create_time` datetime(0) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`log_id`) USING BTREE,
     INDEX         `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 149 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -8467,6 +8474,24 @@ INSERT INTO `schedule_job_log`
 VALUES (156, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-23 17:30:00');
 INSERT INTO `schedule_job_log`
 VALUES (157, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-23 18:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (158, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-24 09:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (159, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 10:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (160, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 10:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (161, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-24 11:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (162, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 14:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (163, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 14:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (164, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 15:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (165, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 15:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (166, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-24 16:30:00');
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -8483,6 +8508,8 @@ CREATE TABLE `sys_captcha`
 -- ----------------------------
 -- Records of sys_captcha
 -- ----------------------------
+INSERT INTO `sys_captcha`
+VALUES ('2cce95ea-7041-4c13-8aa8-91c74c20bb25', 'p3ff6', '2021-09-24 09:24:15');
 INSERT INTO `sys_captcha`
 VALUES ('2df4b40e-d598-47de-8b00-7b0819ee5ee6', 'y6p8p', '2021-07-28 21:49:39');
 INSERT INTO `sys_captcha`
@@ -8558,7 +8585,7 @@ CREATE TABLE `sys_log`
     `ip`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   DEFAULT NULL COMMENT 'IP地址',
     `create_date` datetime(0) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -9153,7 +9180,7 @@ CREATE TABLE `sys_user_token`
 -- Records of sys_user_token
 -- ----------------------------
 INSERT INTO `sys_user_token`
-VALUES (1, '7e58d7d25ae309cbaa0b9207ba178f0c', '2021-09-23 23:28:33', '2021-09-23 11:28:33');
+VALUES (1, '03a4a219f11488b8d795e3c4cf990d21', '2021-09-24 21:19:33', '2021-09-24 09:19:33');
 
 -- ----------------------------
 -- Table structure for tb_user
