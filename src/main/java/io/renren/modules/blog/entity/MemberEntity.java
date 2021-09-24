@@ -1,6 +1,7 @@
 package io.renren.modules.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.renren.common.validator.group.AddGroup;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("bs_member")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author codecrab
@@ -12,6 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MemberSearchVo extends SearchBaseVo {
+
+    private List<String> ids;
+
+    private String query;
 
     private String gender;
 
