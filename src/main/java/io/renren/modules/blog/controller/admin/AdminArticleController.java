@@ -6,7 +6,7 @@ import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.blog.entity.ArticleEntity;
 import io.renren.modules.blog.service.ArticleService;
-import io.renren.modules.blog.vo.ArticleExamineVo;
+import io.renren.modules.blog.vo.StatusBaseVo;
 import io.renren.modules.blog.vo.ArticleVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +71,7 @@ public class AdminArticleController {
      * 审核不通过/通过
      */
     @PutMapping("/examine")
-    public R toExamine(@RequestBody ArticleExamineVo examineVo) {
+    public R toExamine(@RequestBody StatusBaseVo examineVo) {
         ValidatorUtils.validateEntity(examineVo);
 
         boolean update = articleService.update(
