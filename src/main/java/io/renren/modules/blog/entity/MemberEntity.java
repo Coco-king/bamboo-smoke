@@ -102,7 +102,7 @@ public class MemberEntity implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private Integer commentCount;
 
-    /** 状态（0：未激活邮箱，1：正常，-1：已封禁） */
+    /** 状态（0：未激活邮箱，1：正常，-1：已封禁，-10：已注销账户） */
     @JsonSerialize(using = ToStringSerializer.class)
     @NotNull(message = "状态不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer status;

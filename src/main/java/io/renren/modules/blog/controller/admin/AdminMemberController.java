@@ -1,5 +1,6 @@
 package io.renren.modules.blog.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
@@ -7,6 +8,7 @@ import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.blog.entity.MemberEntity;
 import io.renren.modules.blog.service.MemberService;
+import io.renren.modules.blog.vo.MemberStatusVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -66,6 +68,36 @@ public class AdminMemberController {
         memberService.updateMember(member);
 
         return R.ok();
+    }
+
+    /**
+     * 封禁/解封会员
+     */
+    @PutMapping("/status")
+    public R status(@RequestBody MemberStatusVo statusVo) {
+        ValidatorUtils.validateEntity(statusVo);
+
+        Integer status = statusVo.getStatus();
+        Boolean isActive = statusVo.getIsActive();
+        Boolean isRecovery = statusVo.getIsRecovery();
+
+        boolean update = memberService.update(
+            new UpdateWrapper<MemberEntity>()
+                .in("id", statusVo.getIds())
+                // 将要修改的状态为已封禁时，现在的状态必须为 1（正常）
+                .eq(status == -1, "status", 1)
+                // 将要修改的状态为激活时，现在的状态必须为 0（未激活）
+                .eq(isActive && status == 1 && !isRecovery, "status", 0)
+                // 将要修改的状态为解封时，现在的状态必须为 -1（封禁）
+                .eq(!isActive && status == 1 && !isRecovery, "status", -1)
+                // 将要修改的状态为恢复时，现在的状态必须为 -10（已销户）
+                .eq(isRecovery && status == 1, "status", -10)
+                // 将要修改的状态为注销账户时，现在的状态必须不能为已销户
+                .ne(status == -10, "status", -10)
+                .set("status", status)
+        );
+
+        return update ? R.ok() : R.error("修改失败：没有任何数据被改变");
     }
 
     /**
