@@ -57,10 +57,9 @@ public class AdminMemberController {
 
     /**
      * 用户框根据名称搜索
-     * // TODO 因为前端传数组参数会带上'[]'，所以暂时使用POST请求方式，可以在前端使用qs序列化数组后传入
      */
-    @PostMapping("/select/search")
-    public R memberSelectSearch(@RequestBody MemberSearchVo searchVo) {
+    @GetMapping("/select/search")
+    public R memberSelectSearch(MemberSearchVo searchVo) {
 
         List<String> ids = searchVo.getIds();
         String query = searchVo.getQuery();
