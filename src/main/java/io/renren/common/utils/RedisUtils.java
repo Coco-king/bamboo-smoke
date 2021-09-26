@@ -7,7 +7,6 @@
  */
 package io.renren.common.utils;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
@@ -47,10 +46,8 @@ public class RedisUtils {
     /** 不设置过期时长 */
     public final static long NOT_EXPIRE = -1;
 
-    private final static Gson GSON = new Gson();
-
     public void set(String key, Object value, long expire) {
-        valueOperations.set(key, toJson(value));
+        valueOperations.set(key, value);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
@@ -61,26 +58,26 @@ public class RedisUtils {
     }
 
     public <T> T get(String key, Class<T> clazz, long expire) {
-        String value = (String) valueOperations.get(key);
+        Object value = valueOperations.get(key);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        return value == null ? null : fromJson(value, clazz);
+        return value == null ? null : clazz.cast(value);
     }
 
     public <T> T get(String key, Class<T> clazz) {
         return get(key, clazz, NOT_EXPIRE);
     }
 
-    public String get(String key, long expire) {
-        String value = (String) valueOperations.get(key);
+    public Object get(String key, long expire) {
+        Object value = valueOperations.get(key);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
         return value;
     }
 
-    public String get(String key) {
+    public Object get(String key) {
         return get(key, NOT_EXPIRE);
     }
 
@@ -89,7 +86,7 @@ public class RedisUtils {
     }
 
     public void put(String key, String hashKey, Object value, long expire) {
-        hashOperations.put(key, hashKey, toJson(value));
+        hashOperations.put(key, hashKey, value);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
@@ -100,26 +97,26 @@ public class RedisUtils {
     }
 
     public <T> T get(String key, String hashKey, Class<T> clazz, long expire) {
-        String value = (String) hashOperations.get(key, hashKey);
+        Object value = hashOperations.get(key, hashKey);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        return value == null ? null : fromJson(value, clazz);
+        return value == null ? null : clazz.cast(value);
     }
 
     public <T> T get(String key, String hashKey, Class<T> clazz) {
         return get(key, hashKey, clazz, NOT_EXPIRE);
     }
 
-    public String get(String key, String hashKey, long expire) {
-        String value = (String) hashOperations.get(key, hashKey);
+    public Object get(String key, String hashKey, long expire) {
+        Object value = hashOperations.get(key, hashKey);
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
         return value;
     }
 
-    public String get(String key, String hashKey) {
+    public Object get(String key, String hashKey) {
         return get(key, hashKey, NOT_EXPIRE);
     }
 
@@ -127,21 +124,4 @@ public class RedisUtils {
         hashOperations.delete(key, (Object[]) hashKey);
     }
 
-    /**
-     * Object转成JSON数据
-     */
-    private String toJson(Object object) {
-        if (object instanceof Integer || object instanceof Long || object instanceof Float ||
-            object instanceof Double || object instanceof Boolean || object instanceof String) {
-            return String.valueOf(object);
-        }
-        return GSON.toJson(object);
-    }
-
-    /**
-     * JSON数据，转成Object
-     */
-    private <T> T fromJson(String json, Class<T> clazz) {
-        return GSON.fromJson(json, clazz);
-    }
 }
