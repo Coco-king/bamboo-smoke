@@ -8,12 +8,9 @@
 package io.renren.config;
 
 import com.google.common.collect.Maps;
-import io.renren.common.shiro.CustomizedModularRealmAuthenticator;
 import io.renren.modules.blog.shiro.MemberFilter;
-import io.renren.modules.blog.shiro.MemberRealm;
-import io.renren.modules.sys.oauth2.AdminFilter;
-import io.renren.modules.sys.oauth2.AdminRealm;
-import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import io.renren.modules.sys.oauth2.OAuth2Filter;
+import io.renren.modules.sys.oauth2.OAuth2Realm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -23,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -35,19 +31,9 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean("securityManager")
-    public SecurityManager securityManager(
-        AdminRealm adminRealm,
-        MemberRealm memberRealm,
-        CustomizedModularRealmAuthenticator authenticator
-    ) {
-        //配置认证策略，只要有一个Realm认证成功即可，并且返回所有认证成功信息
-        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
-        authenticator.setRealms(Arrays.asList(adminRealm, memberRealm));
+    public SecurityManager securityManager(OAuth2Realm oAuth2Realm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //可以配置多个Realm，其实会把realms属性赋值给ModularRealmAuthenticator的realms属性
-        securityManager.setRealms(Arrays.asList(adminRealm, memberRealm));
-        //配置使用自定义认证器，可以实现多Realm认证，并且可以指定特定Realm处理特定类型的验证
-        securityManager.setAuthenticator(authenticator);
+        securityManager.setRealm(oAuth2Realm);
         securityManager.setRememberMeManager(null);
         return securityManager;
     }
@@ -58,12 +44,12 @@ public class ShiroConfig {
         shiroFilter.setSecurityManager(securityManager);
 
         //oauth过滤
-        Map<String, Filter> filters = Maps.newHashMapWithExpectedSize(1);
-        filters.put("admin", new AdminFilter());
+        Map<String, Filter> filters = Maps.newHashMapWithExpectedSize(2);
+        filters.put("admin", new OAuth2Filter());
         filters.put("member", new MemberFilter());
         shiroFilter.setFilters(filters);
 
-        Map<String, String> filterMap = Maps.newLinkedHashMapWithExpectedSize(9);
+        Map<String, String> filterMap = Maps.newLinkedHashMapWithExpectedSize(13);
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/app/**", "anon");
@@ -72,8 +58,8 @@ public class ShiroConfig {
         filterMap.put("/v3/**", "anon");
         filterMap.put("/docs.html", "anon");
         filterMap.put("/captcha.jpg", "anon");
-        filterMap.put("/api/oss/**", "anon");
         filterMap.put("/api/**", "anon");
+        filterMap.put("/api/oss/**", "anon");
         filterMap.put("/api/auth/**", "member");
         filterMap.put("/admin/**", "admin");
         filterMap.put("/**", "admin");

@@ -28,10 +28,10 @@ import java.io.IOException;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public class AdminFilter extends AuthenticatingFilter {
+public class OAuth2Filter extends AuthenticatingFilter {
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
         //获取请求token
         String token = getRequestToken((HttpServletRequest) request);
 
@@ -39,7 +39,7 @@ public class AdminFilter extends AuthenticatingFilter {
             return null;
         }
 
-        return new AdminToken(token);
+        return new OAuth2Token(token);
     }
 
     @Override
@@ -87,9 +87,9 @@ public class AdminFilter extends AuthenticatingFilter {
     }
 
     /**
-     * 获取请求的token
+     * 根据TokenName获取请求的token
      */
-    private String getRequestToken(HttpServletRequest httpRequest) {
+    protected String getRequestToken(HttpServletRequest httpRequest) {
         //从header中获取token
         String token = httpRequest.getHeader("token");
 
