@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 24/09/2021 17:38:29
+ Date: 29/09/2021 17:21:48
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `bs_article`
     `create_time`      datetime(0) DEFAULT NULL COMMENT '创建日期',
     `update_time`      datetime(0) DEFAULT NULL COMMENT '最后更新日期',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bs_article
@@ -8029,7 +8029,7 @@ CREATE TABLE `qrtz_scheduler_state`
 -- Records of qrtz_scheduler_state
 -- ----------------------------
 INSERT INTO `qrtz_scheduler_state`
-VALUES ('RenrenScheduler', 'MD20SHJQ02571632474014442', 1632474571208, 15000);
+VALUES ('RenrenScheduler', 'MD20SHJQ02571632905844310', 1632907271421, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -8113,8 +8113,8 @@ CREATE TABLE `qrtz_triggers`
 -- Records of qrtz_triggers
 -- ----------------------------
 INSERT INTO `qrtz_triggers`
-VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1632475800000, -1, 5, 'WAITING', 'CRON',
-        1627479868000, 0, NULL, 2,
+VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1632907800000, 1632906000000, 5, 'WAITING',
+        'CRON', 1627479868000, 0, NULL, 2,
         0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017AE86906B87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
 
 -- ----------------------------
@@ -8155,7 +8155,7 @@ CREATE TABLE `schedule_job_log`
     `create_time` datetime(0) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`log_id`) USING BTREE,
     INDEX         `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 194 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -8492,6 +8492,80 @@ INSERT INTO `schedule_job_log`
 VALUES (165, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-24 15:30:00');
 INSERT INTO `schedule_job_log`
 VALUES (166, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-24 16:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (167, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-26 15:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (168, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-26 15:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (169, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-26 16:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (170, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-26 16:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (171, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-26 17:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (172, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 09:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (173, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 10:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (174, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 10:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (175, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 11:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (176, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 11:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (177, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-27 12:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (178, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-27 12:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (179, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 13:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (180, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 13:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (181, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 14:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (182, 1, 'testTask', 'renren', 0, NULL, 2, '2021-09-27 14:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (183, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 15:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (184, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 15:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (185, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 16:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (186, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 16:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (187, 1, 'testTask', 'renren', 0, NULL, 2, '2021-09-27 17:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (188, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-27 17:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (189, 1, 'testTask', 'renren', 0, NULL, 2, '2021-09-27 18:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (190, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 10:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (191, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 10:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (192, 1, 'testTask', 'renren', 0, NULL, 2, '2021-09-29 11:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (193, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 11:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (194, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 12:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (195, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-29 12:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (196, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 13:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (197, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 13:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (198, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 14:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (199, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 14:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (200, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-29 15:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (201, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 16:00:00');
+INSERT INTO `schedule_job_log`
+VALUES (202, 1, 'testTask', 'renren', 0, NULL, 0, '2021-09-29 16:30:00');
+INSERT INTO `schedule_job_log`
+VALUES (203, 1, 'testTask', 'renren', 0, NULL, 1, '2021-09-29 17:00:00');
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -8509,6 +8583,8 @@ CREATE TABLE `sys_captcha`
 -- Records of sys_captcha
 -- ----------------------------
 INSERT INTO `sys_captcha`
+VALUES ('08cd9c80-869e-4fcc-8c86-35d313b636ca', 'f8f5y', '2021-09-29 15:25:25');
+INSERT INTO `sys_captcha`
 VALUES ('2cce95ea-7041-4c13-8aa8-91c74c20bb25', 'p3ff6', '2021-09-24 09:24:15');
 INSERT INTO `sys_captcha`
 VALUES ('2df4b40e-d598-47de-8b00-7b0819ee5ee6', 'y6p8p', '2021-07-28 21:49:39');
@@ -8523,6 +8599,8 @@ VALUES ('3a61799e-5fd0-432c-8ca8-3da6319a02c9', 'ngyfp', '2021-09-23 15:48:19');
 INSERT INTO `sys_captcha`
 VALUES ('42388cf5-c7b4-4b03-8931-4192db5de90d', '45xnw', '2021-09-17 14:46:21');
 INSERT INTO `sys_captcha`
+VALUES ('58a7bc77-9e60-4f7d-8856-9279cf029efc', 'ppgnc', '2021-09-26 09:43:55');
+INSERT INTO `sys_captcha`
 VALUES ('61b1cb08-24d2-408e-8d4c-f82b307a3881', '4cyan', '2021-09-17 15:37:18');
 INSERT INTO `sys_captcha`
 VALUES ('623455c0-2a46-4816-8ed3-bcdcb805f266', 'nmncb', '2021-09-23 09:46:23');
@@ -8533,9 +8611,13 @@ VALUES ('86ddbf19-7da4-4779-8b1f-0b07263fbabd', 'n6666', '2021-09-03 15:56:24');
 INSERT INTO `sys_captcha`
 VALUES ('a13abdf6-77fb-4cc5-8ded-243216c3bc63', 'm6nyx', '2021-07-28 21:49:30');
 INSERT INTO `sys_captcha`
+VALUES ('a5ce2fc6-17be-4631-81c2-65cd2b4be7dd', '2cnm2', '2021-09-26 15:38:34');
+INSERT INTO `sys_captcha`
 VALUES ('c87913aa-b973-427f-8ab2-6bcc4b8affc2', '7dndw', '2021-09-15 15:37:18');
 INSERT INTO `sys_captcha`
 VALUES ('dc093cbd-bc1b-45ef-84ed-bf11e075597e', '5n2x3', '2021-09-15 16:31:06');
+INSERT INTO `sys_captcha`
+VALUES ('e0738814-cda2-46ac-8d82-71c8c3e4ce21', 'myxby', '2021-09-29 13:46:04');
 INSERT INTO `sys_captcha`
 VALUES ('e53479a8-5e11-4524-820e-bf8687ebd1cf', 'bdcnc', '2021-07-28 21:49:38');
 INSERT INTO `sys_captcha`
@@ -8585,7 +8667,7 @@ CREATE TABLE `sys_log`
     `ip`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   DEFAULT NULL COMMENT 'IP地址',
     `create_date` datetime(0) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -9180,7 +9262,7 @@ CREATE TABLE `sys_user_token`
 -- Records of sys_user_token
 -- ----------------------------
 INSERT INTO `sys_user_token`
-VALUES (1, '03a4a219f11488b8d795e3c4cf990d21', '2021-09-24 21:19:33', '2021-09-24 09:19:33');
+VALUES (1, '168617c1410c8285eb0d0e9e4f2bddf8', '2021-09-30 03:20:04', '2021-09-29 15:20:04');
 
 -- ----------------------------
 -- Table structure for tb_user
