@@ -65,7 +65,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
     @Override
     public MemberEntity getUserByLoginName(String loginName) {
-        return null;
+        return baseMapper.selectOne(
+            new QueryWrapper<MemberEntity>()
+                .eq("member_name", loginName).or()
+                .eq("email", loginName).or()
+                .eq("mobile", loginName)
+        );
     }
 
     @Override

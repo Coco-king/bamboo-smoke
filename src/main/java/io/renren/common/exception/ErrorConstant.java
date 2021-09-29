@@ -21,4 +21,7 @@ public class ErrorConstant {
     public static final String MEMBER_WITH_SAME_EMAIL = "该邮箱已被使用，请换一个重试";
     public static final String MEMBER_WITH_SAME_MOBILE = "该手机号已被使用，请换一个重试";
     public static final String MEMBER_WILL_UPDATE_IS_NULL = "待更新会员信息未找到";
+
+    public static final String VERIFY_TOKEN_ERROR = "验证凭据有误，请重新登陆";
+    public static final String VERIFY_TOKEN_EXPIRED = "登录状态已过期，请重新登陆";
 }

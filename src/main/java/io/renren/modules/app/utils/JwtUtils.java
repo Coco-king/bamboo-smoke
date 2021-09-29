@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * jwt工具类
@@ -25,6 +26,8 @@ import java.util.Date;
 @Component
 @ConfigurationProperties(prefix = "renren.jwt")
 public class JwtUtils {
+
+    public static final String MEMBER_CLAIM = "member_claim";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,6 +46,24 @@ public class JwtUtils {
         return Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .setSubject(userId + "")
+            .setIssuedAt(nowDate)
+            .setExpiration(expireDate)
+            .signWith(SignatureAlgorithm.HS512, secret)
+            .compact();
+    }
+
+    /**
+     * 生成jwt token
+     */
+    public String generateToken(long userId, Map<String, Object> claims) {
+        Date nowDate = new Date();
+        //过期时间
+        Date expireDate = new Date(nowDate.getTime() + expire * 1000);
+
+        return Jwts.builder()
+            .setHeaderParam("typ", "JWT")
+            .setSubject(userId + "")
+            .addClaims(claims)
             .setIssuedAt(nowDate)
             .setExpiration(expireDate)
             .signWith(SignatureAlgorithm.HS512, secret)
