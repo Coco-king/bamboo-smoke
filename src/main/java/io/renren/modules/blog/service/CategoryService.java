@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.blog.entity.CategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +16,9 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<String> getParentPath(Long id);
+
+    void removeByIdsWithChildren(List<Long> ids);
 }
 

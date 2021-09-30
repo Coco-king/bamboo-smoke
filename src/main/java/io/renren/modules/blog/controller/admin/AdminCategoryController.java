@@ -68,7 +68,7 @@ public class AdminCategoryController {
      */
     @DeleteMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
-        categoryService.removeByIds(Arrays.asList(ids));
+        categoryService.removeByIdsWithChildren(Arrays.asList(ids));
 
         return R.ok();
     }

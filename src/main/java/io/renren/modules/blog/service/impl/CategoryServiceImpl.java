@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.modules.blog.entity.CategoryEntity;
@@ -13,6 +14,8 @@ import io.renren.modules.blog.service.CategoryService;
 import io.renren.modules.blog.vo.search.SearchBaseVo;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,4 +45,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return new PageUtils(page);
     }
 
+    @Override
+    public List<String> getParentPath(Long id) {
+        List<String> result = Lists.newArrayList(id.toString());
+        getParentPath(id, result);
+        Collections.reverse(result);
+        return result;
+    }
+
+    @Override
+    public void removeByIdsWithChildren(List<Long> ids) {
+        baseMapper.delete(
+            new QueryWrapper<CategoryEntity>()
+                .in("id", ids).or()
+                .in("parent_id", ids)
+        );
+    }
+
+    /**
+     * 递归找到他的所有上级路径，子路径在前 例如：["11001","11000","1"]
+     */
+    private void getParentPath(Long id, List<String> list) {
+        CategoryEntity category = baseMapper.selectById(id);
+        Long parentId = category.getParentId();
+        if (parentId != 0) {
+            list.add(parentId.toString());
+            getParentPath(parentId, list);
+        }
+    }
 }

@@ -4,9 +4,11 @@ import io.renren.common.utils.R;
 import io.renren.modules.blog.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author codecrab
@@ -25,6 +27,16 @@ public class CategoryController {
     @GetMapping("/category/list")
     public R list() {
         return R.ok().push("list", categoryService.list());
+    }
+
+    /**
+     * 列表
+     */
+    @GetMapping("/category/path")
+    public R path(@RequestParam Long id) {
+        List<String> cascadeData = categoryService.getParentPath(id);
+
+        return R.ok().push("cascadeData", cascadeData);
     }
 
 }
